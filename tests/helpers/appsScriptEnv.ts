@@ -182,6 +182,9 @@ export function createMockListItem(text: string = "") {
     asParagraph: jest.fn(function () {
       return this;
     }),
+    asListItem: jest.fn(function () {
+      return this;
+    }),
   };
 }
 

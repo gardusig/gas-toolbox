@@ -20,6 +20,7 @@ import {
   createMockFile,
   createMockDocument,
   createMockParagraph,
+  createMockListItem,
 } from "./helpers/appsScriptEnv";
 
 describe("Docs Module", () => {
@@ -953,9 +954,7 @@ describe("Docs Module", () => {
 
       const mockDoc = createMockDocument("Report", "doc-id");
       const body = mockDoc.getBody();
-      const listItem = createMockParagraph("Item {{value}}");
-      listItem.setText = jest.fn();
-      listItem.getType = jest.fn(() => "LIST_ITEM");
+      const listItem = createMockListItem("Item {{value}}");
       body.getNumChildren = jest.fn(() => 1);
       body.getChild = jest.fn(() => listItem) as any;
 

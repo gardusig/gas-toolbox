@@ -44,10 +44,7 @@ export function replaceTextInFile(
   for (let i = 0; i < childCount; i += 1) {
     const child = body.getChild(i);
     const type = child.getType();
-    if (
-      type === DocumentApp.ElementType.PARAGRAPH ||
-      type === DocumentApp.ElementType.LIST_ITEM
-    ) {
+    if (type === DocumentApp.ElementType.PARAGRAPH) {
       const paragraph = child.asParagraph();
       const text = paragraph.getText();
       const matchRegex = new RegExp(patternSource, patternFlags);
@@ -55,6 +52,17 @@ export function replaceTextInFile(
       if (matches && matches.length > 0) {
         const replaceRegex = new RegExp(patternSource, patternFlags);
         paragraph.setText(text.replace(replaceRegex, replacementText));
+        replacements += matches.length;
+      }
+    } else if (type === DocumentApp.ElementType.LIST_ITEM) {
+      // ListItem has getText() and setText() methods but can't use asParagraph()
+      const listItem = child.asListItem();
+      const text = listItem.getText();
+      const matchRegex = new RegExp(patternSource, patternFlags);
+      const matches = text.match(matchRegex);
+      if (matches && matches.length > 0) {
+        const replaceRegex = new RegExp(patternSource, patternFlags);
+        listItem.setText(text.replace(replaceRegex, replacementText));
         replacements += matches.length;
       }
     }
