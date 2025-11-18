@@ -242,8 +242,8 @@ function docsExample() {
   Toolbox.insertParagraphAtPosition(
     "MyProjects/2024/Reports",
     "Monthly Report",
-    1,
-    "Introduction paragraph"
+    "Introduction paragraph",
+    1  // position (0-based index)
   );
 
   // Get document content
@@ -498,8 +498,8 @@ Toolbox.appendParagraphToFile(
 Toolbox.insertParagraphAtPosition(
   "Reports/2024",
   "Monthly Summary",
-  0,
-  "First paragraph"
+  "First paragraph",
+  0  // position (0-based index)
 );
 
 // Get paragraph at position
