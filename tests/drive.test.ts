@@ -19,10 +19,7 @@ import {
   renameFolder,
   moveFolder,
 } from "../src/drive";
-import {
-  createMockFolder,
-  createMockFile,
-} from "./helpers/appsScriptEnv";
+import { createMockFolder, createMockFile } from "./helpers/appsScriptEnv";
 
 describe("Drive Module", () => {
   beforeEach(() => {
@@ -399,7 +396,10 @@ describe("Drive Module", () => {
 
       const result = copyFile(file as any, destinationFolder as any);
 
-      expect(file.makeCopy).toHaveBeenCalledWith("test.docx", destinationFolder);
+      expect(file.makeCopy).toHaveBeenCalledWith(
+        "test.docx",
+        destinationFolder
+      );
       expect(result).toBe(copiedFile);
     });
 
@@ -409,9 +409,16 @@ describe("Drive Module", () => {
       const copiedFile = createMockFile("test-copy.docx", "copied-id");
       file.makeCopy = jest.fn(() => copiedFile) as any;
 
-      const result = copyFile(file as any, destinationFolder as any, "test-copy.docx");
+      const result = copyFile(
+        file as any,
+        destinationFolder as any,
+        "test-copy.docx"
+      );
 
-      expect(file.makeCopy).toHaveBeenCalledWith("test-copy.docx", destinationFolder);
+      expect(file.makeCopy).toHaveBeenCalledWith(
+        "test-copy.docx",
+        destinationFolder
+      );
       expect(result).toBe(copiedFile);
     });
 
@@ -627,7 +634,9 @@ describe("Drive Module", () => {
 
       const result = getFolderById("folder-id-123");
 
-      expect(global.DriveApp.getFolderById).toHaveBeenCalledWith("folder-id-123");
+      expect(global.DriveApp.getFolderById).toHaveBeenCalledWith(
+        "folder-id-123"
+      );
       expect(result).toBe(folder);
     });
 
@@ -832,7 +841,7 @@ describe("Drive Module", () => {
       const file2 = createMockFile("doc2.pdf", "file2-id");
       folder._addFile(file1);
       folder._addFile(file2);
-      
+
       const fileIterator: any = {
         hasNext: jest.fn(() => {
           let callCount = 0;

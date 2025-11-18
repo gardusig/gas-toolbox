@@ -1,6 +1,6 @@
 function findOrCreateFolder(
   parentFolder: GoogleAppsScript.Drive.Folder,
-  folderName: string,
+  folderName: string
 ): GoogleAppsScript.Drive.Folder {
   const folderIterator = parentFolder.getFoldersByName(folderName);
   if (folderIterator.hasNext()) {
@@ -14,7 +14,7 @@ function findOrCreateFolder(
 }
 
 export function getOrCreateFolderByPath(
-  path: string,
+  path: string
 ): GoogleAppsScript.Drive.Folder {
   if (path === null || path === undefined) {
     throw new Error("Path must be a non-empty string");
@@ -22,12 +22,12 @@ export function getOrCreateFolderByPath(
   if (typeof path !== "string") {
     throw new Error("Path must be a non-empty string");
   }
-  const parts = path.split("/").filter((part) => part.trim() !== "");
+  const parts = path.split("/").filter(part => part.trim() !== "");
   if (parts.length === 0) {
     return DriveApp.getRootFolder();
   }
   let currentFolder = DriveApp.getRootFolder();
-  parts.forEach((part) => {
+  parts.forEach(part => {
     currentFolder = findOrCreateFolder(currentFolder, part.trim());
   });
   Logger.log(`Folder path "${path}" retrieved or created successfully`);
@@ -35,7 +35,7 @@ export function getOrCreateFolderByPath(
 }
 
 export function getAllFoldersInFolder(
-  folder: GoogleAppsScript.Drive.Folder,
+  folder: GoogleAppsScript.Drive.Folder
 ): GoogleAppsScript.Drive.Folder[] {
   if (!folder) {
     throw new Error("Folder is required");
@@ -45,13 +45,13 @@ export function getAllFoldersInFolder(
   while (folderIterator.hasNext()) {
     folders.push(folderIterator.next());
   }
-  Logger.log(`Found ${folders.length} folder(s) in folder "${folder.getName()}"`);
+  Logger.log(
+    `Found ${folders.length} folder(s) in folder "${folder.getName()}"`
+  );
   return folders;
 }
 
-export function deleteFolder(
-  folder: GoogleAppsScript.Drive.Folder,
-): void {
+export function deleteFolder(folder: GoogleAppsScript.Drive.Folder): void {
   if (!folder) {
     throw new Error("Folder is required");
   }
@@ -60,9 +60,7 @@ export function deleteFolder(
   Logger.log(`Folder "${folderName}" deleted successfully`);
 }
 
-export function checkFolderExists(
-  folderPath: string,
-): boolean {
+export function checkFolderExists(folderPath: string): boolean {
   if (!folderPath || typeof folderPath !== "string") {
     return false;
   }
@@ -75,7 +73,7 @@ export function checkFolderExists(
 }
 
 export function getFolderById(
-  folderId: string,
+  folderId: string
 ): GoogleAppsScript.Drive.Folder | null {
   if (!folderId || typeof folderId !== "string") {
     return null;
@@ -91,7 +89,7 @@ export function getFolderById(
 
 export function getFolderByName(
   folderName: string,
-  parentFolder: GoogleAppsScript.Drive.Folder,
+  parentFolder: GoogleAppsScript.Drive.Folder
 ): GoogleAppsScript.Drive.Folder | null {
   if (!parentFolder) {
     throw new Error("Parent folder is required");
@@ -102,7 +100,9 @@ export function getFolderByName(
   const folderIterator = parentFolder.getFoldersByName(folderName);
   if (folderIterator.hasNext()) {
     const folder = folderIterator.next();
-    Logger.log(`Folder "${folderName}" found in folder "${parentFolder.getName()}"`);
+    Logger.log(
+      `Folder "${folderName}" found in folder "${parentFolder.getName()}"`
+    );
     return folder;
   }
   return null;
@@ -110,14 +110,15 @@ export function getFolderByName(
 
 export function createFolder(
   folderName: string,
-  parentFolder?: GoogleAppsScript.Drive.Folder,
+  parentFolder?: GoogleAppsScript.Drive.Folder
 ): GoogleAppsScript.Drive.Folder {
   if (!folderName || typeof folderName !== "string") {
     throw new Error("Folder name must be a non-empty string");
   }
   const targetFolder = parentFolder || DriveApp.getRootFolder();
   const newFolder = targetFolder.createFolder(folderName);
-  Logger.log(`Folder "${folderName}" created in folder "${targetFolder.getName()}"`);
+  Logger.log(
+    `Folder "${folderName}" created in folder "${targetFolder.getName()}"`
+  );
   return newFolder;
 }
-

@@ -4,7 +4,7 @@ export function replaceTextInFile(
   folderPath: string,
   fileName: string,
   searchPattern: string,
-  replacementText: string,
+  replacementText: string
 ): number {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -12,10 +12,18 @@ export function replaceTextInFile(
   if (!fileName || typeof fileName !== "string") {
     throw new Error("File name must be a non-empty string");
   }
-  if (searchPattern === null || searchPattern === undefined || typeof searchPattern !== "string") {
+  if (
+    searchPattern === null ||
+    searchPattern === undefined ||
+    typeof searchPattern !== "string"
+  ) {
     throw new Error("Search pattern must be a string");
   }
-  if (replacementText === null || replacementText === undefined || typeof replacementText !== "string") {
+  if (
+    replacementText === null ||
+    replacementText === undefined ||
+    typeof replacementText !== "string"
+  ) {
     throw new Error("Replacement text must be a string");
   }
   const file = findFile(folderPath, fileName);
@@ -26,7 +34,7 @@ export function replaceTextInFile(
     baseRegex = new RegExp(searchPattern, "g");
   } catch (error) {
     throw new Error(
-      `Invalid search pattern "${searchPattern}": ${(error as Error).message}`,
+      `Invalid search pattern "${searchPattern}": ${(error as Error).message}`
     );
   }
   const patternSource = baseRegex.source;
@@ -53,8 +61,7 @@ export function replaceTextInFile(
   }
   doc.saveAndClose();
   Logger.log(
-    `Replaced ${replacements} occurrence(s) of "${searchPattern}" in document "${fileName}"`,
+    `Replaced ${replacements} occurrence(s) of "${searchPattern}" in document "${fileName}"`
   );
   return replacements;
 }
-

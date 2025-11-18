@@ -28,4 +28,3 @@ export {
   renameFolder,
   moveFolder,
 } from "./operations";
-

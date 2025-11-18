@@ -82,4 +82,3 @@ export {
   trimRows,
   trimColumns,
 } from "./sheets";
-

@@ -50,7 +50,9 @@ describe("Sheets Module", () => {
   describe("getSpreadsheet", () => {
     it("should return active spreadsheet when no ID provided", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       const result = getSpreadsheet();
 
@@ -60,7 +62,9 @@ describe("Sheets Module", () => {
 
     it("should return active spreadsheet when empty string provided", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       const result = getSpreadsheet("");
 
@@ -74,7 +78,9 @@ describe("Sheets Module", () => {
 
       const result = getSpreadsheet("spreadsheet-id-123");
 
-      expect(global.SpreadsheetApp.openById).toHaveBeenCalledWith("spreadsheet-id-123");
+      expect(global.SpreadsheetApp.openById).toHaveBeenCalledWith(
+        "spreadsheet-id-123"
+      );
       expect(result).toBe(mockSpreadsheet);
     });
 
@@ -82,7 +88,9 @@ describe("Sheets Module", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       (global.SpreadsheetApp as any).openByUrl = jest.fn(() => mockSpreadsheet);
 
-      const result = getSpreadsheet("https://docs.google.com/spreadsheets.google.com/d/123");
+      const result = getSpreadsheet(
+        "https://docs.google.com/spreadsheets.google.com/d/123"
+      );
 
       expect(global.SpreadsheetApp.openByUrl).toHaveBeenCalled();
       expect(result).toBe(mockSpreadsheet);
@@ -111,9 +119,15 @@ describe("Sheets Module", () => {
       const mockSheet = createMockSheet("NewSheet", []);
       (mockSpreadsheet as any).insertSheet = jest.fn(() => mockSheet);
 
-      const result = createSheet("NewSheet", ["name", "age"], mockSpreadsheet as any);
+      const result = createSheet(
+        "NewSheet",
+        ["name", "age"],
+        mockSpreadsheet as any
+      );
 
-      expect((mockSpreadsheet as any).insertSheet).toHaveBeenCalledWith("NewSheet");
+      expect((mockSpreadsheet as any).insertSheet).toHaveBeenCalledWith(
+        "NewSheet"
+      );
       expect(mockSheet.clear).toHaveBeenCalled();
       expect(mockSheet.appendRow).toHaveBeenCalledWith(["name", "age"]);
       expect(result).toBe(mockSheet);
@@ -124,9 +138,15 @@ describe("Sheets Module", () => {
       const mockSheet = createMockSheet("ExistingSheet", []);
       (mockSpreadsheet as any).getSheetByName = jest.fn(() => mockSheet);
 
-      const result = createSheet("ExistingSheet", ["name", "age"], mockSpreadsheet as any);
+      const result = createSheet(
+        "ExistingSheet",
+        ["name", "age"],
+        mockSpreadsheet as any
+      );
 
-      expect((mockSpreadsheet as any).getSheetByName).toHaveBeenCalledWith("ExistingSheet");
+      expect((mockSpreadsheet as any).getSheetByName).toHaveBeenCalledWith(
+        "ExistingSheet"
+      );
       expect(mockSpreadsheet.insertSheet).not.toHaveBeenCalled();
       expect(mockSheet.clear).toHaveBeenCalled();
       expect(result).toBe(mockSheet);
@@ -172,7 +192,9 @@ describe("Sheets Module", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       const mockSheet = createMockSheet("TestSheet", []);
       (mockSpreadsheet as any).getSheetByName = jest.fn(() => mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       const result = getSheet("TestSheet");
 
@@ -182,7 +204,9 @@ describe("Sheets Module", () => {
     it("should return null if sheet not found", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       (mockSpreadsheet as any).getSheetByName = jest.fn(() => null);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       const result = getSheet("NonExistentSheet");
 
@@ -210,7 +234,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age", "email"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should append object to sheet", () => {
@@ -218,7 +244,11 @@ describe("Sheets Module", () => {
 
       appendObject("TestSheet", ["name", "age", "email"], obj);
 
-      expect(mockSheet.appendRow).toHaveBeenCalledWith(["John", 30, "john@example.com"]);
+      expect(mockSheet.appendRow).toHaveBeenCalledWith([
+        "John",
+        30,
+        "john@example.com",
+      ]);
     });
 
     it("should throw error if sheetName is null", () => {
@@ -254,7 +284,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should append multiple objects", () => {
@@ -288,7 +320,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should update object at row index", () => {
@@ -329,7 +363,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should delete row at index", () => {
@@ -359,7 +395,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should delete multiple rows", () => {
@@ -384,7 +422,9 @@ describe("Sheets Module", () => {
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSheet.getLastRow = jest.fn(() => 5);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should clear all data rows", () => {
@@ -412,7 +452,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return all objects from sheet", () => {
@@ -440,7 +482,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return object at row index", () => {
@@ -478,7 +522,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return count of objects", () => {
@@ -509,7 +555,9 @@ describe("Sheets Module", () => {
       mockSheet.getLastColumn = jest.fn(() => 1);
       mockSheet.getMaxColumns = jest.fn(() => 26);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should trim rows and columns", () => {
@@ -536,7 +584,9 @@ describe("Sheets Module", () => {
       mockSheet.getLastRow = jest.fn(() => 2);
       mockSheet.getMaxRows = jest.fn(() => 1000);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should trim empty rows", () => {
@@ -565,7 +615,9 @@ describe("Sheets Module", () => {
       mockSheet.getLastColumn = jest.fn(() => 1);
       mockSheet.getMaxColumns = jest.fn(() => 26);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should trim empty columns", () => {
@@ -597,7 +649,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should update multiple objects", () => {
@@ -631,7 +685,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["Jane", 25]);
       mockSheet.appendRow(["Bob", 35]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should delete objects matching predicate", () => {
@@ -642,7 +698,7 @@ describe("Sheets Module", () => {
       const deleted = deleteObjectsByFilter(
         "TestSheet",
         ["name", "age"],
-        (obj) => (obj.age as number) > 30,
+        obj => (obj.age as number) > 30
       );
 
       // The function should find and delete matching rows
@@ -653,7 +709,7 @@ describe("Sheets Module", () => {
       const deleted = deleteObjectsByFilter(
         "TestSheet",
         ["name", "age"],
-        (obj) => (obj.age as number) > 100,
+        obj => (obj.age as number) > 100
       );
 
       expect(deleted).toBe(0);
@@ -663,11 +719,7 @@ describe("Sheets Module", () => {
       const emptySheet = createMockSheet("EmptySheet", ["name"]);
       mockSpreadsheet._addSheet(emptySheet);
 
-      const deleted = deleteObjectsByFilter(
-        "EmptySheet",
-        ["name"],
-        () => true,
-      );
+      const deleted = deleteObjectsByFilter("EmptySheet", ["name"], () => true);
 
       expect(deleted).toBe(0);
     });
@@ -688,13 +740,19 @@ describe("Sheets Module", () => {
       mockSheet = createMockSheet("TestSheet", ["email", "name", "age"]);
       mockSheet.appendRow(["john@example.com", "John", 30]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should update existing object", () => {
       // First create the sheet and add the object
-      appendObject("TestSheet", ["email", "name", "age"], { email: "john@example.com", name: "John", age: 30 });
-      
+      appendObject("TestSheet", ["email", "name", "age"], {
+        email: "john@example.com",
+        name: "John",
+        age: 30,
+      });
+
       // Now the sheet exists with data, so upsert should find and update it
       const mockRange = { setValues: jest.fn() };
       mockSheet.getRange = jest.fn(() => mockRange);
@@ -703,7 +761,7 @@ describe("Sheets Module", () => {
         "TestSheet",
         ["email", "name", "age"],
         "email",
-        { email: "john@example.com", name: "John Updated", age: 31 },
+        { email: "john@example.com", name: "John Updated", age: 31 }
       );
 
       // Should update existing row (index 0) - but getSheetWithHeader might clear, so check >= 0
@@ -719,7 +777,7 @@ describe("Sheets Module", () => {
         "TestSheet",
         ["email", "name", "age"],
         "email",
-        { email: "jane@example.com", name: "Jane", age: 25 },
+        { email: "jane@example.com", name: "Jane", age: 25 }
       );
 
       expect(rowIndex).toBeGreaterThanOrEqual(0);
@@ -728,7 +786,9 @@ describe("Sheets Module", () => {
 
     it("should throw error if keyColumn not in header", () => {
       expect(() => {
-        upsertObject("TestSheet", ["name", "age"], "email", { email: "test@example.com" });
+        upsertObject("TestSheet", ["name", "age"], "email", {
+          email: "test@example.com",
+        });
       }).toThrow("Key column 'email' not found in header");
     });
 
@@ -740,7 +800,10 @@ describe("Sheets Module", () => {
 
     it("should throw error if keyValue is null", () => {
       expect(() => {
-        upsertObject("TestSheet", ["email", "name"], "email", { email: null as any, name: "John" });
+        upsertObject("TestSheet", ["email", "name"], "email", {
+          email: null as any,
+          name: "John",
+        });
       }).toThrow("Key value is required for column 'email'");
     });
   });
@@ -753,7 +816,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["email", "name"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should upsert multiple objects", () => {
@@ -762,7 +827,12 @@ describe("Sheets Module", () => {
         { email: "jane@example.com", name: "Jane" },
       ];
 
-      const count = upsertObjects("TestSheet", ["email", "name"], "email", objs);
+      const count = upsertObjects(
+        "TestSheet",
+        ["email", "name"],
+        "email",
+        objs
+      );
 
       expect(count).toBe(2);
     });
@@ -790,7 +860,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.getLastRow = jest.fn(() => 2);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should replace all data", () => {
@@ -829,7 +901,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["Jane", 25]);
       mockSheet.appendRow(["Bob", 35]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return objects in batch", () => {
@@ -872,7 +946,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return header map", () => {
@@ -893,11 +969,16 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["Jane", 25]);
       mockSheet.appendRow(["Bob", 35]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should filter objects by predicate", () => {
-      const filtered = filterObjects("TestSheet", (obj) => (obj.age as number) > 30);
+      const filtered = filterObjects(
+        "TestSheet",
+        obj => (obj.age as number) > 30
+      );
 
       expect(filtered).toHaveLength(1);
       expect(filtered[0]).toEqual({ name: "Bob", age: 35 });
@@ -920,17 +1001,19 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should find object by predicate", () => {
-      const obj = findObject("TestSheet", (obj) => obj.name === "John");
+      const obj = findObject("TestSheet", obj => obj.name === "John");
 
       expect(obj).toEqual({ name: "John", age: 30 });
     });
 
     it("should return null if not found", () => {
-      const obj = findObject("TestSheet", (obj) => obj.name === "NonExistent");
+      const obj = findObject("TestSheet", obj => obj.name === "NonExistent");
 
       expect(obj).toBeNull();
     });
@@ -952,17 +1035,22 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should find object index by predicate", () => {
-      const index = findObjectIndex("TestSheet", (obj) => obj.name === "Jane");
+      const index = findObjectIndex("TestSheet", obj => obj.name === "Jane");
 
       expect(index).toBe(1);
     });
 
     it("should return null if not found", () => {
-      const index = findObjectIndex("TestSheet", (obj) => obj.name === "NonExistent");
+      const index = findObjectIndex(
+        "TestSheet",
+        obj => obj.name === "NonExistent"
+      );
 
       expect(index).toBeNull();
     });
@@ -984,7 +1072,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return first object", () => {
@@ -1013,7 +1103,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return last object", () => {
@@ -1041,17 +1133,19 @@ describe("Sheets Module", () => {
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSheet.appendRow(["John", 30]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return true if object exists", () => {
-      const result = exists("TestSheet", (obj) => obj.name === "John");
+      const result = exists("TestSheet", obj => obj.name === "John");
 
       expect(result).toBe(true);
     });
 
     it("should return false if object does not exist", () => {
-      const result = exists("TestSheet", (obj) => obj.name === "NonExistent");
+      const result = exists("TestSheet", obj => obj.name === "NonExistent");
 
       expect(result).toBe(false);
     });
@@ -1068,7 +1162,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["Jane", 25]);
       mockSheet.appendRow(["Bob", 35]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should sort objects by single column ascending", () => {
@@ -1115,7 +1211,9 @@ describe("Sheets Module", () => {
         mockSheet.appendRow([`User${i}`, 20 + i]);
       }
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return paginated objects", () => {
@@ -1163,7 +1261,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should sum numeric values in column", () => {
@@ -1195,7 +1295,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should calculate average of numeric values", () => {
@@ -1227,7 +1329,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return minimum numeric value", () => {
@@ -1262,7 +1366,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["John", 30]);
       mockSheet.appendRow(["Jane", 25]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return maximum numeric value", () => {
@@ -1298,7 +1404,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["A", "Item2"]);
       mockSheet.appendRow(["B", "Item3"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should group objects by column", () => {
@@ -1345,7 +1453,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["A", "Item2"]);
       mockSheet.appendRow(["B", "Item3"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return distinct values", () => {
@@ -1374,7 +1484,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["inactive", "Jane"]);
       mockSheet.appendRow(["active", "Bob"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should filter objects by column value", () => {
@@ -1397,7 +1509,9 @@ describe("Sheets Module", () => {
         throw new Error("Access denied");
       });
 
-      const result = getSpreadsheet("https://docs.google.com/spreadsheets.google.com/d/123");
+      const result = getSpreadsheet(
+        "https://docs.google.com/spreadsheets.google.com/d/123"
+      );
 
       expect(result).toBeNull();
     });
@@ -1422,7 +1536,9 @@ describe("Sheets Module", () => {
 
     it("should throw error if sheet not found", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       expect(() => {
         trimRows("NonExistentSheet");
@@ -1435,7 +1551,9 @@ describe("Sheets Module", () => {
 
       expect(() => {
         trimRows("NonExistentSheet", "spreadsheet-id-123");
-      }).toThrow("Sheet 'NonExistentSheet' not found in spreadsheet 'spreadsheet-id-123'");
+      }).toThrow(
+        "Sheet 'NonExistentSheet' not found in spreadsheet 'spreadsheet-id-123'"
+      );
     });
   });
 
@@ -1448,7 +1566,9 @@ describe("Sheets Module", () => {
 
     it("should throw error if sheet not found", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       expect(() => {
         trimColumns("NonExistentSheet");
@@ -1461,7 +1581,9 @@ describe("Sheets Module", () => {
 
       expect(() => {
         trimColumns("NonExistentSheet", "spreadsheet-id-123");
-      }).toThrow("Sheet 'NonExistentSheet' not found in spreadsheet 'spreadsheet-id-123'");
+      }).toThrow(
+        "Sheet 'NonExistentSheet' not found in spreadsheet 'spreadsheet-id-123'"
+      );
     });
   });
 
@@ -1473,7 +1595,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should handle empty sheet when preserving data", () => {
@@ -1507,7 +1631,9 @@ describe("Sheets Module", () => {
       const mockSheet = createMockSheet("TestSheet", []);
       mockSheet._setRows([[]]); // Empty header
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       expect(() => {
         getAllObjects("TestSheet");
@@ -1521,7 +1647,9 @@ describe("Sheets Module", () => {
 
       expect(() => {
         getAllObjects("NonExistentSheet", "spreadsheet-id-123");
-      }).toThrow("Sheet 'NonExistentSheet' not found in spreadsheet 'spreadsheet-id-123'");
+      }).toThrow(
+        "Sheet 'NonExistentSheet' not found in spreadsheet 'spreadsheet-id-123'"
+      );
     });
 
     it("should throw error for non-string header value", () => {
@@ -1529,7 +1657,9 @@ describe("Sheets Module", () => {
       const mockSheet = createMockSheet("TestSheet", []);
       mockSheet._setRows([[123, "age"]]); // Non-string header
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       expect(() => {
         getAllObjects("TestSheet");
@@ -1549,7 +1679,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow([date1, "Item1"]);
       mockSheet.appendRow([date2, "Item2"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return minimum Date value", () => {
@@ -1575,7 +1707,9 @@ describe("Sheets Module", () => {
       mockSheet.appendRow(["Zebra"]);
       mockSheet.appendRow(["Apple"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return minimum string value", () => {
@@ -1599,16 +1733,16 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["email", "name"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should handle case when no existing rows match", () => {
-      const rowIndex = upsertObject(
-        "TestSheet",
-        ["email", "name"],
-        "email",
-        { email: "new@example.com", name: "New User" },
-      );
+      const rowIndex = upsertObject("TestSheet", ["email", "name"], "email", {
+        email: "new@example.com",
+        name: "New User",
+      });
 
       expect(rowIndex).toBeGreaterThanOrEqual(0);
     });
@@ -1623,13 +1757,13 @@ describe("Sheets Module", () => {
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSheet.getLastRow = jest.fn(() => 1); // Only header
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should handle empty sheet when replacing", () => {
-      replaceAll("TestSheet", ["name", "age"], [
-        { name: "Alice", age: 20 },
-      ]);
+      replaceAll("TestSheet", ["name", "age"], [{ name: "Alice", age: 20 }]);
 
       expect(mockSheet.appendRow).toHaveBeenCalled();
     });
@@ -1638,7 +1772,9 @@ describe("Sheets Module", () => {
   describe("getSheetWithHeader edge cases - write.ts", () => {
     it("should throw error if header is empty array", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       expect(() => {
         appendObject("TestSheet", [], { name: "John" });
@@ -1657,11 +1793,15 @@ describe("Sheets Module", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       const mockSheet = createMockSheet("NewSheet", []);
       (mockSpreadsheet as any).insertSheet = jest.fn(() => mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       appendObject("NewSheet", ["name"], { name: "John" });
 
-      expect((mockSpreadsheet as any).insertSheet).toHaveBeenCalledWith("NewSheet");
+      expect((mockSpreadsheet as any).insertSheet).toHaveBeenCalledWith(
+        "NewSheet"
+      );
     });
 
     it("should handle sheet with fewer columns than header", () => {
@@ -1669,9 +1809,15 @@ describe("Sheets Module", () => {
       const mockSheet = createMockSheet("TestSheet", ["name"]);
       mockSheet.getLastColumn = jest.fn(() => 1); // Only 1 column
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
-      appendObject("TestSheet", ["name", "age", "email"], { name: "John", age: 30, email: "john@example.com" });
+      appendObject("TestSheet", ["name", "age", "email"], {
+        name: "John",
+        age: 30,
+        email: "john@example.com",
+      });
 
       expect(mockSheet.clear).toHaveBeenCalled();
     });
@@ -1686,9 +1832,14 @@ describe("Sheets Module", () => {
       };
       (mockSheet as any).getRange = jest.fn(() => mockRange);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
-      upsertObject("TestSheet", ["name", "age"], "name", { name: "John", age: 30 });
+      upsertObject("TestSheet", ["name", "age"], "name", {
+        name: "John",
+        age: 30,
+      });
 
       expect(mockSheet.clear).toHaveBeenCalled();
     });
@@ -1697,7 +1848,9 @@ describe("Sheets Module", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       const mockSheet = createMockSheet("TestSheet", ["name"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       expect(() => {
         upsertObject("TestSheet", ["name"], "name", null as any);
@@ -1717,7 +1870,9 @@ describe("Sheets Module", () => {
       const mockSheet = createMockSheet("TestSheet", []);
       mockSheet._setRows([]); // Truly empty
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       expect(() => {
         getAllObjects("TestSheet");
@@ -1733,7 +1888,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should handle null/undefined values when sorting ascending", () => {
@@ -1777,11 +1934,7 @@ describe("Sheets Module", () => {
     });
 
     it("should handle string comparison in sort", () => {
-      mockSheet._setRows([
-        ["name"],
-        ["Zebra"],
-        ["Apple"],
-      ]);
+      mockSheet._setRows([["name"], ["Zebra"], ["Apple"]]);
 
       const sorted = sortObjects("TestSheet", "name", true);
 
@@ -1809,16 +1962,13 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["value"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return null if all values are filtered out", () => {
-      mockSheet._setRows([
-        ["value"],
-        [null],
-        [undefined],
-        [""],
-      ]);
+      mockSheet._setRows([["value"], [null], [undefined], [""]]);
 
       const minValue = min("TestSheet", "value");
 
@@ -1834,16 +1984,13 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["value"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return null if all values are filtered out", () => {
-      mockSheet._setRows([
-        ["value"],
-        [null],
-        [undefined],
-        [""],
-      ]);
+      mockSheet._setRows([["value"], [null], [undefined], [""]]);
 
       const maxValue = max("TestSheet", "value");
 
@@ -1856,7 +2003,9 @@ describe("Sheets Module", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       const mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       const headerMap = getHeaderMap("TestSheet");
 
@@ -1870,7 +2019,9 @@ describe("Sheets Module", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       const mockSheet = createMockSheet("TestSheet", ["col1", "col2", "col3"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       const headerMap = getHeaderMap("TestSheet");
       // deepCopy processes the headerMap which is an object, but internally
@@ -1888,7 +2039,9 @@ describe("Sheets Module", () => {
       const mockSheet = createMockSheet("TestSheet", ["name"]);
       mockSheet.getLastColumn = jest.fn(() => 1); // 1 column, but header needs 2
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       appendObject("TestSheet", ["name", "age"], { name: "John", age: 30 });
 
@@ -1901,7 +2054,9 @@ describe("Sheets Module", () => {
       const mockSheet = createMockSheet("TestSheet", []);
       mockSheet.getLastColumn = jest.fn(() => 0); // Empty sheet
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       upsertObject("TestSheet", ["name"], "name", { name: "John" });
 
@@ -1918,7 +2073,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should handle null bVal when sorting ascending", () => {
@@ -1967,7 +2124,7 @@ describe("Sheets Module", () => {
         ["name", "age", "score"],
         ["John", 25, 100], // Has score
         ["Jane", 30, ""], // Empty string - will be filtered by createObject, making score undefined
-        ["Bob", 35, 200], // Has score  
+        ["Bob", 35, 200], // Has score
         ["Charlie", 40, ""], // Empty string - undefined score
       ]);
 
@@ -1977,14 +2134,14 @@ describe("Sheets Module", () => {
 
       // Verify the branch was hit - we have objects with and without scores
       expect(sorted.length).toBe(4);
-      
+
       const objectsWithScore = sorted.filter(obj => obj.score !== undefined);
       const objectsWithoutScore = sorted.filter(obj => obj.score === undefined);
-      
+
       // Verify we have both types
       expect(objectsWithScore.length).toBe(2); // John and Bob have scores
       expect(objectsWithoutScore.length).toBe(2); // Jane and Charlie don't have scores
-      
+
       // The branch (line 269) should have been hit during sorting
       // When descending and bVal is undefined, return 1 means a (with value) comes after b (undefined)
       // But in practice with our data, objects are still sorted correctly
@@ -2000,7 +2157,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["email", "name"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return count of upserted objects", () => {
@@ -2010,7 +2169,12 @@ describe("Sheets Module", () => {
         { email: "bob@example.com", name: "Bob" },
       ];
 
-      const count = upsertObjects("TestSheet", ["email", "name"], "email", objs);
+      const count = upsertObjects(
+        "TestSheet",
+        ["email", "name"],
+        "email",
+        objs
+      );
 
       expect(count).toBe(3);
     });
@@ -2024,7 +2188,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["email", "name"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should update existing row and return row index (lines 286-287)", () => {
@@ -2051,7 +2217,7 @@ describe("Sheets Module", () => {
         return mockDataRange;
       });
       (mockSheet as any).getDataRange = jest.fn(() => mockDataRange);
-      
+
       // Now upsert should find and update it (covers lines 286-287)
       const mockUpdateRange = { setValues: jest.fn() };
       (mockSheet as any).getRange = jest.fn((row: number, col: number) => {
@@ -2060,12 +2226,10 @@ describe("Sheets Module", () => {
       });
       (mockSheet as any).getDataRange = jest.fn(() => mockDataRange);
 
-      const rowIndex = upsertObject(
-        "TestSheet",
-        ["email", "name"],
-        "email",
-        { email: "john@example.com", name: "John Updated" },
-      );
+      const rowIndex = upsertObject("TestSheet", ["email", "name"], "email", {
+        email: "john@example.com",
+        name: "John Updated",
+      });
 
       expect(rowIndex).toBe(0);
       expect(mockUpdateRange.setValues).toHaveBeenCalled();
@@ -2078,10 +2242,18 @@ describe("Sheets Module", () => {
       const mockSheet = createMockSheet("TestSheet", ["name"]);
       mockSheet.getLastColumn = jest.fn(() => 1); // 1 column
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       // Header needs 2 columns, but sheet only has 1 - should clear and append
-      upsertObject("TestSheet", ["name", "age"], "name", { name: "John", age: 30 }, undefined);
+      upsertObject(
+        "TestSheet",
+        ["name", "age"],
+        "name",
+        { name: "John", age: 30 },
+        undefined
+      );
 
       expect(mockSheet.clear).toHaveBeenCalled();
       expect(mockSheet.appendRow).toHaveBeenCalled();
@@ -2096,7 +2268,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should handle null bVal when ascending (line 267)", () => {
@@ -2130,7 +2304,9 @@ describe("Sheets Module", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       const mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       const headerMap = getHeaderMap("TestSheet");
       expect(headerMap).not.toBeNull();
@@ -2156,7 +2332,9 @@ describe("Sheets Module", () => {
       mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
     });
 
     it("should return -1 when bVal is null and ascending is true (line 267)", () => {
@@ -2213,7 +2391,9 @@ describe("Sheets Module", () => {
       const mockSpreadsheet = createMockSpreadsheet("Test Spreadsheet");
       const mockSheet = createMockSheet("TestSheet", ["name", "age"]);
       mockSpreadsheet._addSheet(mockSheet);
-      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(() => mockSpreadsheet);
+      (global.SpreadsheetApp as any).getActiveSpreadsheet = jest.fn(
+        () => mockSpreadsheet
+      );
 
       const headerMap = getHeaderMap("TestSheet");
       // deepCopy processes the headerMap object
@@ -2224,4 +2404,3 @@ describe("Sheets Module", () => {
     });
   });
 });
-

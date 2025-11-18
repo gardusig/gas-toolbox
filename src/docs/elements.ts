@@ -5,7 +5,7 @@ export function insertTable(
   fileName: string,
   rows: number,
   columns: number,
-  cellValues?: string[][],
+  cellValues?: string[][]
 ): GoogleAppsScript.Document.Table {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -19,21 +19,28 @@ export function insertTable(
   if (rows < 1) {
     throw new Error("Rows must be >= 1");
   }
-  if (columns === null || columns === undefined || typeof columns !== "number") {
+  if (
+    columns === null ||
+    columns === undefined ||
+    typeof columns !== "number"
+  ) {
     throw new Error("Columns must be a number");
   }
   if (columns < 1) {
     throw new Error("Columns must be >= 1");
   }
-  if (cellValues !== undefined && (!Array.isArray(cellValues) || !Array.isArray(cellValues[0]))) {
+  if (
+    cellValues !== undefined &&
+    (!Array.isArray(cellValues) || !Array.isArray(cellValues[0]))
+  ) {
     throw new Error("Cell values must be a 2D array");
   }
   const file = findFile(folderPath, fileName);
   const doc = DocumentApp.openById(file.getId());
   const body = doc.getBody();
-  
+
   const table = body.appendTable();
-  
+
   // Create rows and columns
   for (let i = 0; i < rows; i += 1) {
     const row = table.appendTableRow();
@@ -44,12 +51,12 @@ export function insertTable(
       }
     }
   }
-  
+
   doc.saveAndClose();
   Logger.log(
-    `Table with ${rows}x${columns} inserted into document "${fileName}" in folder "${folderPath}"`,
+    `Table with ${rows}x${columns} inserted into document "${fileName}" in folder "${folderPath}"`
   );
-  
+
   return table;
 }
 
@@ -58,7 +65,7 @@ export function insertImage(
   fileName: string,
   imageBlob: GoogleAppsScript.Base.Blob,
   width?: number,
-  height?: number,
+  height?: number
 ): GoogleAppsScript.Document.InlineImage {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -72,19 +79,30 @@ export function insertImage(
   const file = findFile(folderPath, fileName);
   const doc = DocumentApp.openById(file.getId());
   const body = doc.getBody();
-  
+
   const image = body.appendImage(imageBlob);
-  
-  if (width !== undefined && width !== null && typeof width === "number" && width > 0) {
+
+  if (
+    width !== undefined &&
+    width !== null &&
+    typeof width === "number" &&
+    width > 0
+  ) {
     image.setWidth(width);
   }
-  if (height !== undefined && height !== null && typeof height === "number" && height > 0) {
+  if (
+    height !== undefined &&
+    height !== null &&
+    typeof height === "number" &&
+    height > 0
+  ) {
     image.setHeight(height);
   }
-  
+
   doc.saveAndClose();
-  Logger.log(`Image inserted into document "${fileName}" in folder "${folderPath}"`);
-  
+  Logger.log(
+    `Image inserted into document "${fileName}" in folder "${folderPath}"`
+  );
+
   return image;
 }
-

@@ -1,6 +1,9 @@
 // Helper functions to create mock objects for Google Apps Script APIs
 
-export function createMockFolder(name: string, id: string = `folder-${name}`): any {
+export function createMockFolder(
+  name: string,
+  id: string = `folder-${name}`
+): any {
   const folders: any[] = [];
   const files: any[] = [];
 
@@ -9,7 +12,7 @@ export function createMockFolder(name: string, id: string = `folder-${name}`): a
     getName: jest.fn(() => name),
     getUrl: jest.fn(() => `https://drive.google.com/drive/folders/${id}`),
     getFoldersByName: jest.fn((folderName: string) => {
-      const matching = folders.filter((f) => f.getName() === folderName);
+      const matching = folders.filter(f => f.getName() === folderName);
       let index = 0;
       return {
         hasNext: jest.fn(() => index < matching.length),
@@ -17,12 +20,15 @@ export function createMockFolder(name: string, id: string = `folder-${name}`): a
       };
     }),
     createFolder: jest.fn((folderName: string): any => {
-      const newFolder: any = createMockFolder(folderName, `folder-${folderName}-${Date.now()}`);
+      const newFolder: any = createMockFolder(
+        folderName,
+        `folder-${folderName}-${Date.now()}`
+      );
       folders.push(newFolder);
       return newFolder;
     }),
     getFilesByName: jest.fn((fileName: string) => {
-      const matching = files.filter((f) => f.getName() === fileName);
+      const matching = files.filter(f => f.getName() === fileName);
       let index = 0;
       return {
         hasNext: jest.fn(() => index < matching.length),
@@ -120,12 +126,16 @@ export function createMockDocument(
     }),
     getNumChildren: jest.fn(() => paragraphs.length),
     getChild: jest.fn((index: number) => paragraphs[index]),
-    getText: jest.fn(() => paragraphs.map((p) => {
-      if (p && typeof p.getText === "function") {
-        return p.getText();
-      }
-      return "";
-    }).join("\n")),
+    getText: jest.fn(() =>
+      paragraphs
+        .map(p => {
+          if (p && typeof p.getText === "function") {
+            return p.getText();
+          }
+          return "";
+        })
+        .join("\n")
+    ),
   };
 
   return {
@@ -190,21 +200,23 @@ export function createMockSheet(name: string, header: string[] = []) {
     getDataRange: jest.fn(() => ({
       getValues: jest.fn(() => rows),
     })),
-    getRange: jest.fn((row: number, col: number, numRows?: number, numCols?: number) => {
-      const rangeRows = rows.slice(row - 1, row - 1 + (numRows || 1));
-      return {
-        setValues: jest.fn((values: any[][]) => {
-          values.forEach((rowValues, i) => {
-            if (rows[row - 1 + i]) {
-              rowValues.forEach((val, j) => {
-                rows[row - 1 + i][col - 1 + j] = val;
-              });
-            }
-          });
-        }),
-        getValues: jest.fn(() => rangeRows),
-      };
-    }),
+    getRange: jest.fn(
+      (row: number, col: number, numRows?: number, numCols?: number) => {
+        const rangeRows = rows.slice(row - 1, row - 1 + (numRows || 1));
+        return {
+          setValues: jest.fn((values: any[][]) => {
+            values.forEach((rowValues, i) => {
+              if (rows[row - 1 + i]) {
+                rowValues.forEach((val, j) => {
+                  rows[row - 1 + i][col - 1 + j] = val;
+                });
+              }
+            });
+          }),
+          getValues: jest.fn(() => rangeRows),
+        };
+      }
+    ),
     deleteRow: jest.fn((row: number) => {
       rows.splice(row - 1, 1);
       lastRow = rows.length;
@@ -214,7 +226,7 @@ export function createMockSheet(name: string, header: string[] = []) {
       lastRow = rows.length;
     }),
     deleteColumns: jest.fn((startCol: number, numCols: number) => {
-      rows.forEach((row) => row.splice(startCol - 1, numCols));
+      rows.forEach(row => row.splice(startCol - 1, numCols));
       lastColumn = Math.max(0, lastColumn - numCols);
     }),
     getLastRow: jest.fn(() => lastRow),
@@ -232,7 +244,7 @@ export function createMockSheet(name: string, header: string[] = []) {
       rows.push(...newRows);
       lastRow = rows.length;
       if (rows.length > 0) {
-        lastColumn = Math.max(...rows.map((r) => r.length));
+        lastColumn = Math.max(...rows.map(r => r.length));
       }
     },
   };
@@ -245,7 +257,7 @@ export function createMockSpreadsheet(name: string = "Test Spreadsheet") {
     getId: jest.fn(() => `spreadsheet-${name}`),
     getName: jest.fn(() => name),
     getSheetByName: jest.fn((sheetName: string) => {
-      return sheets.find((s) => s.getName() === sheetName) || null;
+      return sheets.find(s => s.getName() === sheetName) || null;
     }),
     insertSheet: jest.fn((sheetName: string) => {
       const sheet = createMockSheet(sheetName);
@@ -256,4 +268,3 @@ export function createMockSpreadsheet(name: string = "Test Spreadsheet") {
     _getSheets: () => sheets,
   };
 }
-

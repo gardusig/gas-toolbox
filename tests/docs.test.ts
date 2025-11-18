@@ -180,7 +180,9 @@ describe("Docs Module", () => {
       const paragraph = createMockParagraph();
       body.getNumChildren = jest.fn(() => 0); // Empty document
       body.appendParagraph = jest.fn((text: string) => paragraph) as any;
-      body.insertParagraph = jest.fn((index: number, text: string) => paragraph) as any;
+      body.insertParagraph = jest.fn(
+        (index: number, text: string) => paragraph
+      ) as any;
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
@@ -229,7 +231,9 @@ describe("Docs Module", () => {
       const paragraph = createMockParagraph();
       body.getNumChildren = jest.fn(() => 0); // Empty document
       paragraph.setHeading = jest.fn((heading: any) => paragraph) as any;
-      body.insertParagraph = jest.fn((index: number, text: string) => paragraph) as any;
+      body.insertParagraph = jest.fn(
+        (index: number, text: string) => paragraph
+      ) as any;
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
@@ -366,8 +370,30 @@ describe("Docs Module", () => {
 
       const mockDoc = createMockDocument("Report", "doc-id");
       const body = mockDoc.getBody();
-      const listItem1: any = { setGlyphType: jest.fn(), setAttributes: jest.fn(), setAlignment: jest.fn(), getText: jest.fn(), setText: jest.fn(), setHeading: jest.fn(), getType: jest.fn(() => "LIST_ITEM"), asParagraph: jest.fn(function() { return this; }) };
-      const listItem2: any = { setGlyphType: jest.fn(), setAttributes: jest.fn(), setAlignment: jest.fn(), getText: jest.fn(), setText: jest.fn(), setHeading: jest.fn(), getType: jest.fn(() => "LIST_ITEM"), asParagraph: jest.fn(function() { return this; }) };
+      const listItem1: any = {
+        setGlyphType: jest.fn(),
+        setAttributes: jest.fn(),
+        setAlignment: jest.fn(),
+        getText: jest.fn(),
+        setText: jest.fn(),
+        setHeading: jest.fn(),
+        getType: jest.fn(() => "LIST_ITEM"),
+        asParagraph: jest.fn(function () {
+          return this;
+        }),
+      };
+      const listItem2: any = {
+        setGlyphType: jest.fn(),
+        setAttributes: jest.fn(),
+        setAlignment: jest.fn(),
+        getText: jest.fn(),
+        setText: jest.fn(),
+        setHeading: jest.fn(),
+        getType: jest.fn(() => "LIST_ITEM"),
+        asParagraph: jest.fn(function () {
+          return this;
+        }),
+      };
       body.appendListItem = jest.fn((text: string) => {
         if (text === "Item 1") return listItem1;
         return listItem2;
@@ -375,7 +401,10 @@ describe("Docs Module", () => {
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const result = appendBulletedListToFile("Projects", "Report", ["Item 1", "Item 2"]);
+      const result = appendBulletedListToFile("Projects", "Report", [
+        "Item 1",
+        "Item 2",
+      ]);
 
       expect(body.appendListItem).toHaveBeenCalledTimes(2);
       expect(listItem1.setGlyphType).toHaveBeenCalledWith("BULLET");
@@ -447,12 +476,18 @@ describe("Docs Module", () => {
 
       const mockDoc = createMockDocument("Report", "doc-id");
       const body = mockDoc.getBody();
-      const listItem: any = { setGlyphType: jest.fn(), setAttributes: jest.fn(), setAlignment: jest.fn() };
+      const listItem: any = {
+        setGlyphType: jest.fn(),
+        setAttributes: jest.fn(),
+        setAlignment: jest.fn(),
+      };
       body.appendListItem = jest.fn(() => listItem) as any;
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const result = appendBulletedListToFile("Projects", "Report", ["Single Item"]);
+      const result = appendBulletedListToFile("Projects", "Report", [
+        "Single Item",
+      ]);
 
       expect(result).toHaveLength(1);
       expect(body.appendListItem).toHaveBeenCalledTimes(1);
@@ -468,12 +503,21 @@ describe("Docs Module", () => {
 
       const mockDoc = createMockDocument("Report", "doc-id");
       const body = mockDoc.getBody();
-      const listItem: any = { setGlyphType: jest.fn(), setAttributes: jest.fn(), setAlignment: jest.fn() };
+      const listItem: any = {
+        setGlyphType: jest.fn(),
+        setAttributes: jest.fn(),
+        setAlignment: jest.fn(),
+      };
       body.appendListItem = jest.fn(() => listItem) as any;
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const result = appendBulletedListToFile("Projects", "Report", ["Item", 123, null, "Another Item"] as any);
+      const result = appendBulletedListToFile("Projects", "Report", [
+        "Item",
+        123,
+        null,
+        "Another Item",
+      ] as any);
 
       expect(body.appendListItem).toHaveBeenCalledTimes(2);
       expect(result).toHaveLength(2);
@@ -491,8 +535,16 @@ describe("Docs Module", () => {
 
       const mockDoc = createMockDocument("Report", "doc-id");
       const body = mockDoc.getBody();
-      const listItem1: any = { setGlyphType: jest.fn(), setAttributes: jest.fn(), setAlignment: jest.fn() };
-      const listItem2: any = { setGlyphType: jest.fn(), setAttributes: jest.fn(), setAlignment: jest.fn() };
+      const listItem1: any = {
+        setGlyphType: jest.fn(),
+        setAttributes: jest.fn(),
+        setAlignment: jest.fn(),
+      };
+      const listItem2: any = {
+        setGlyphType: jest.fn(),
+        setAttributes: jest.fn(),
+        setAlignment: jest.fn(),
+      };
       body.appendListItem = jest.fn((text: string) => {
         if (text === "First") return listItem1;
         return listItem2;
@@ -500,7 +552,10 @@ describe("Docs Module", () => {
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const result = appendNumberedListToFile("Projects", "Report", ["First", "Second"]);
+      const result = appendNumberedListToFile("Projects", "Report", [
+        "First",
+        "Second",
+      ]);
 
       expect(body.appendListItem).toHaveBeenCalledTimes(2);
       expect(listItem1.setGlyphType).toHaveBeenCalledWith("NUMBER");
@@ -559,12 +614,19 @@ describe("Docs Module", () => {
 
       const mockDoc = createMockDocument("Report", "doc-id");
       const body = mockDoc.getBody();
-      const listItem: any = { setGlyphType: jest.fn(), setAttributes: jest.fn(), setAlignment: jest.fn() };
+      const listItem: any = {
+        setGlyphType: jest.fn(),
+        setAttributes: jest.fn(),
+        setAlignment: jest.fn(),
+      };
       body.appendListItem = jest.fn(() => listItem) as any;
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const result = appendNumberedListToFile("Projects", "Report", ["Item", 123] as any);
+      const result = appendNumberedListToFile("Projects", "Report", [
+        "Item",
+        123,
+      ] as any);
 
       expect(body.appendListItem).toHaveBeenCalledTimes(1);
       expect(result).toHaveLength(1);
@@ -588,7 +650,12 @@ describe("Docs Module", () => {
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const result = insertParagraphAtPosition("Projects", "Report", "New Content", 1);
+      const result = insertParagraphAtPosition(
+        "Projects",
+        "Report",
+        "New Content",
+        1
+      );
 
       expect(body.insertParagraph).toHaveBeenCalledWith(1, "New Content");
       expect(result).toBe(paragraph);
@@ -611,7 +678,12 @@ describe("Docs Module", () => {
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const result = insertParagraphAtPosition("Projects", "Report", "Content", 100);
+      const result = insertParagraphAtPosition(
+        "Projects",
+        "Report",
+        "Content",
+        100
+      );
 
       expect(body.insertParagraph).toHaveBeenCalledWith(2, "Content");
       expect(result).toBe(paragraph);
@@ -661,7 +733,12 @@ describe("Docs Module", () => {
 
     it("should throw error if position is not a number", () => {
       expect(() => {
-        insertParagraphAtPosition("Projects", "Report", "Content", "not a number" as any);
+        insertParagraphAtPosition(
+          "Projects",
+          "Report",
+          "Content",
+          "not a number" as any
+        );
       }).toThrow("Position must be a number");
     });
 
@@ -682,7 +759,13 @@ describe("Docs Module", () => {
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      insertParagraphAtPosition("Projects", "Report", "Heading", 0, (global.DocumentApp as any).ParagraphHeading.HEADING2);
+      insertParagraphAtPosition(
+        "Projects",
+        "Report",
+        "Heading",
+        0,
+        (global.DocumentApp as any).ParagraphHeading.HEADING2
+      );
 
       expect(paragraph.setHeading).toHaveBeenCalledWith("HEADING2");
     });
@@ -707,7 +790,12 @@ describe("Docs Module", () => {
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const count = replaceTextInFile("Projects", "Report", "{{name}}", "World");
+      const count = replaceTextInFile(
+        "Projects",
+        "Report",
+        "{{name}}",
+        "World"
+      );
 
       expect(paragraph.getText).toHaveBeenCalled();
       expect(paragraph.setText).toHaveBeenCalledWith("Hello World");
@@ -733,9 +821,16 @@ describe("Docs Module", () => {
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const count = replaceTextInFile("Projects", "Report", "{{name}}", "World");
+      const count = replaceTextInFile(
+        "Projects",
+        "Report",
+        "{{name}}",
+        "World"
+      );
 
-      expect(paragraph.setText).toHaveBeenCalledWith("Hello World, hello World");
+      expect(paragraph.setText).toHaveBeenCalledWith(
+        "Hello World, hello World"
+      );
       expect(count).toBe(2);
     });
 
@@ -775,7 +870,12 @@ describe("Docs Module", () => {
 
     it("should throw error if fileName is undefined", () => {
       expect(() => {
-        replaceTextInFile("Projects", undefined as any, "pattern", "replacement");
+        replaceTextInFile(
+          "Projects",
+          undefined as any,
+          "pattern",
+          "replacement"
+        );
       }).toThrow("File name must be a non-empty string");
     });
 
@@ -833,7 +933,12 @@ describe("Docs Module", () => {
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
 
-      const count = replaceTextInFile("Projects", "Report", "NotFound", "Replacement");
+      const count = replaceTextInFile(
+        "Projects",
+        "Report",
+        "NotFound",
+        "Replacement"
+      );
 
       expect(count).toBe(0);
     });

@@ -1,9 +1,5 @@
 // Spreadsheet utilities
-export {
-  getSpreadsheet,
-  createSheet,
-  getSheet,
-} from "./spreadsheet";
+export { getSpreadsheet, createSheet, getSheet } from "./spreadsheet";
 
 // Write operations
 export {
@@ -45,11 +41,7 @@ export {
 } from "./read";
 
 // Formatting operations
-export {
-  trim,
-  trimRows,
-  trimColumns,
-} from "./formatting";
+export { trim, trimRows, trimColumns } from "./formatting";
 
 // Types
 export type {
@@ -58,4 +50,3 @@ export type {
   GenericObject,
   HeaderMap,
 } from "./types";
-

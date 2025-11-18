@@ -1,7 +1,7 @@
 export function copyFile(
   file: GoogleAppsScript.Drive.File,
   destinationFolder: GoogleAppsScript.Drive.Folder,
-  newName?: string,
+  newName?: string
 ): GoogleAppsScript.Drive.File {
   if (!file) {
     throw new Error("File is required");
@@ -11,13 +11,15 @@ export function copyFile(
   }
   const fileName = newName || file.getName();
   const copiedFile = file.makeCopy(fileName, destinationFolder);
-  Logger.log(`File "${file.getName()}" copied to folder "${destinationFolder.getName()}" as "${fileName}"`);
+  Logger.log(
+    `File "${file.getName()}" copied to folder "${destinationFolder.getName()}" as "${fileName}"`
+  );
   return copiedFile;
 }
 
 export function moveFile(
   file: GoogleAppsScript.Drive.File,
-  destinationFolder: GoogleAppsScript.Drive.Folder,
+  destinationFolder: GoogleAppsScript.Drive.Folder
 ): void {
   if (!file) {
     throw new Error("File is required");
@@ -27,12 +29,14 @@ export function moveFile(
   }
   const fileName = file.getName();
   file.moveTo(destinationFolder);
-  Logger.log(`File "${fileName}" moved to folder "${destinationFolder.getName()}"`);
+  Logger.log(
+    `File "${fileName}" moved to folder "${destinationFolder.getName()}"`
+  );
 }
 
 export function renameFile(
   file: GoogleAppsScript.Drive.File,
-  newName: string,
+  newName: string
 ): void {
   if (!file) {
     throw new Error("File is required");
@@ -47,7 +51,7 @@ export function renameFile(
 
 export function renameFolder(
   folder: GoogleAppsScript.Drive.Folder,
-  newName: string,
+  newName: string
 ): void {
   if (!folder) {
     throw new Error("Folder is required");
@@ -62,7 +66,7 @@ export function renameFolder(
 
 export function moveFolder(
   folder: GoogleAppsScript.Drive.Folder,
-  destinationFolder: GoogleAppsScript.Drive.Folder,
+  destinationFolder: GoogleAppsScript.Drive.Folder
 ): void {
   if (!folder) {
     throw new Error("Folder is required");
@@ -72,6 +76,7 @@ export function moveFolder(
   }
   const folderName = folder.getName();
   folder.moveTo(destinationFolder);
-  Logger.log(`Folder "${folderName}" moved to folder "${destinationFolder.getName()}"`);
+  Logger.log(
+    `Folder "${folderName}" moved to folder "${destinationFolder.getName()}"`
+  );
 }
-

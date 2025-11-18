@@ -1,11 +1,7 @@
-import {
-  getOrCreateFolderByPath,
-  getFileByName,
-  findFile,
-} from "../drive";
+import { getOrCreateFolderByPath, getFileByName, findFile } from "../drive";
 
 export function ensureFolder(
-  folderPath: string,
+  folderPath: string
 ): GoogleAppsScript.Drive.Folder {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -15,7 +11,7 @@ export function ensureFolder(
 
 export function createDocument(
   folderPath: string,
-  docName: string,
+  docName: string
 ): GoogleAppsScript.Document.Document {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -28,7 +24,7 @@ export function createDocument(
 
   if (existingFile) {
     Logger.log(
-      `Document "${docName}" already exists in folder: "${targetFolder.getName()}"`,
+      `Document "${docName}" already exists in folder: "${targetFolder.getName()}"`
     );
     return DocumentApp.openById(existingFile.getId());
   }
@@ -40,15 +36,12 @@ export function createDocument(
     `Document created successfully:` +
       `\n\tURL: ${doc.getUrl()}` +
       `\n\tName: ${doc.getName()}` +
-      `\n\tLocation: ${targetFolder.getName()}`,
+      `\n\tLocation: ${targetFolder.getName()}`
   );
   return doc;
 }
 
-export function clearDocument(
-  folderPath: string,
-  fileName: string,
-): void {
+export function clearDocument(folderPath: string, fileName: string): void {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
   }
@@ -65,7 +58,7 @@ export function clearDocument(
 
 export function getDocumentContent(
   folderPath: string,
-  fileName: string,
+  fileName: string
 ): string {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -78,7 +71,8 @@ export function getDocumentContent(
   const body = doc.getBody();
   const content = body.getText();
   doc.saveAndClose();
-  Logger.log(`Retrieved content from document "${fileName}" in folder "${folderPath}"`);
+  Logger.log(
+    `Retrieved content from document "${fileName}" in folder "${folderPath}"`
+  );
   return content;
 }
-

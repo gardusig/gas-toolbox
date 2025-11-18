@@ -1,9 +1,11 @@
-import { getSpreadsheet, createSheet, getSheet } from "./spreadsheet";
-import type { GenericObject, HeaderMap } from "./types";
+import { getSpreadsheet } from "./spreadsheet";
+import type { GenericObject, HeaderMap, SheetCellValue } from "./types";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getSerializedObject(obj: GenericObject, header: string[]): any[] {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const serializedObject: any[] = [];
-  header.forEach((key) => {
+  header.forEach(key => {
     serializedObject.push(obj[key]);
   });
   return serializedObject;
@@ -13,7 +15,7 @@ function getSheetWithHeader(
   sheetName: string,
   header: string[],
   spreadsheetIdOrURL?: string,
-  preserveData: boolean = false,
+  preserveData: boolean = false
 ): { sheet: GoogleAppsScript.Spreadsheet.Sheet; header: string[] } {
   if (!sheetName || typeof sheetName !== "string") {
     throw new Error("Sheet name must be a non-empty string");
@@ -27,7 +29,7 @@ function getSheetWithHeader(
   const spreadsheet = getSpreadsheet(spreadsheetIdOrURL);
   if (spreadsheet === null) {
     throw new Error(
-      `Failed to find spreadsheet${spreadsheetIdOrURL ? ` for ID or URL '${spreadsheetIdOrURL}'` : ""}`,
+      `Failed to find spreadsheet${spreadsheetIdOrURL ? ` for ID or URL '${spreadsheetIdOrURL}'` : ""}`
     );
   }
   let sheet = spreadsheet.getSheetByName(sheetName);
@@ -51,8 +53,11 @@ function getSheetWithHeader(
       }
     } else {
       try {
-        const existingHeader = sheet.getRange(1, 1, 1, header.length).getValues()[0];
-        const headerMatches = existingHeader.length === header.length &&
+        const existingHeader = sheet
+          .getRange(1, 1, 1, header.length)
+          .getValues()[0];
+        const headerMatches =
+          existingHeader.length === header.length &&
           existingHeader.every((val, i) => val === header[i]);
         if (!headerMatches) {
           // Header doesn't match, need to recreate
@@ -74,7 +79,7 @@ export function appendObject(
   sheetName: string,
   header: string[],
   obj: GenericObject,
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): void {
   if (!obj || typeof obj !== "object") {
     throw new Error("Object must be a valid object");
@@ -82,7 +87,7 @@ export function appendObject(
   const { sheet, header: sheetHeader } = getSheetWithHeader(
     sheetName,
     header,
-    spreadsheetIdOrURL,
+    spreadsheetIdOrURL
   );
   const serializedObject = getSerializedObject(obj, sheetHeader);
   sheet.appendRow(serializedObject);
@@ -93,12 +98,12 @@ export function appendObjects(
   sheetName: string,
   header: string[],
   objs: GenericObject[],
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): void {
   if (!objs || !Array.isArray(objs)) {
     throw new Error("Objects must be an array");
   }
-  objs.forEach((obj) => {
+  objs.forEach(obj => {
     appendObject(sheetName, header, obj, spreadsheetIdOrURL);
   });
 }
@@ -108,14 +113,18 @@ export function updateObject(
   header: string[],
   rowIndex: number,
   obj: GenericObject,
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): void {
-  if (rowIndex === null || rowIndex === undefined || typeof rowIndex !== "number") {
+  if (
+    rowIndex === null ||
+    rowIndex === undefined ||
+    typeof rowIndex !== "number"
+  ) {
     throw new Error("Row index must be a number");
   }
   if (rowIndex < 0) {
     throw new Error(
-      "Row index must be >= 0 (0-based indexing, 0 = first data row)",
+      "Row index must be >= 0 (0-based indexing, 0 = first data row)"
     );
   }
   if (!obj || typeof obj !== "object") {
@@ -124,7 +133,7 @@ export function updateObject(
   const { sheet, header: sheetHeader } = getSheetWithHeader(
     sheetName,
     header,
-    spreadsheetIdOrURL,
+    spreadsheetIdOrURL
   );
   const serializedObject = getSerializedObject(obj, sheetHeader);
   // rowIndex 0 = first data row = row 2 in sheet (row 1 is header)
@@ -137,7 +146,7 @@ export function updateObjects(
   sheetName: string,
   header: string[],
   updates: Array<{ rowIndex: number; obj: GenericObject }>,
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): void {
   if (!updates || !Array.isArray(updates)) {
     throw new Error("Updates must be an array");
@@ -151,14 +160,18 @@ export function deleteObject(
   sheetName: string,
   header: string[],
   rowIndex: number,
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): void {
-  if (rowIndex === null || rowIndex === undefined || typeof rowIndex !== "number") {
+  if (
+    rowIndex === null ||
+    rowIndex === undefined ||
+    typeof rowIndex !== "number"
+  ) {
     throw new Error("Row index must be a number");
   }
   if (rowIndex < 0) {
     throw new Error(
-      "Row index must be >= 0 (0-based indexing, 0 = first data row)",
+      "Row index must be >= 0 (0-based indexing, 0 = first data row)"
     );
   }
   const { sheet } = getSheetWithHeader(sheetName, header, spreadsheetIdOrURL);
@@ -171,13 +184,13 @@ export function deleteObjects(
   sheetName: string,
   header: string[],
   rowIndices: number[],
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): void {
   if (!rowIndices || !Array.isArray(rowIndices)) {
     throw new Error("Row indices must be an array");
   }
   const sortedIndices = [...rowIndices].sort((a, b) => b - a);
-  sortedIndices.forEach((rowIndex) => {
+  sortedIndices.forEach(rowIndex => {
     deleteObject(sheetName, header, rowIndex, spreadsheetIdOrURL);
   });
 }
@@ -186,12 +199,17 @@ export function deleteObjectsByFilter(
   sheetName: string,
   header: string[],
   predicate: (obj: GenericObject, rowIndex: number) => boolean,
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): number {
   if (!predicate || typeof predicate !== "function") {
     throw new Error("Predicate must be a function");
   }
-  const { sheet } = getSheetWithHeader(sheetName, header, spreadsheetIdOrURL, true);
+  const { sheet } = getSheetWithHeader(
+    sheetName,
+    header,
+    spreadsheetIdOrURL,
+    true
+  );
   const dataRange = sheet.getDataRange();
   const values = dataRange.getValues();
   if (values.length < 2) {
@@ -211,17 +229,20 @@ export function deleteObjectsByFilter(
 
   // Check each data row
   for (let rowIndex = 1; rowIndex < values.length; rowIndex++) {
-    const row = values[rowIndex];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const row = values[rowIndex] as unknown[];
     const obj: GenericObject = {};
 
     for (const [columnName, columnIndex] of Object.entries(headerMap)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const cellContent = row[columnIndex];
       if (
         cellContent !== undefined &&
         cellContent !== null &&
         cellContent !== ""
       ) {
-        obj[columnName] = cellContent;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        obj[columnName] = cellContent as SheetCellValue;
       }
     }
 
@@ -231,14 +252,16 @@ export function deleteObjectsByFilter(
   }
 
   deleteObjects(sheetName, header, indicesToDelete, spreadsheetIdOrURL);
-  Logger.log(`Deleted ${indicesToDelete.length} object(s) from sheet "${sheetName}"`);
+  Logger.log(
+    `Deleted ${indicesToDelete.length} object(s) from sheet "${sheetName}"`
+  );
   return indicesToDelete.length;
 }
 
 export function clearAll(
   sheetName: string,
   header: string[],
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): void {
   const { sheet } = getSheetWithHeader(sheetName, header, spreadsheetIdOrURL);
   const lastRow = sheet.getLastRow();
@@ -253,7 +276,7 @@ export function upsertObject(
   header: string[],
   keyColumn: string,
   obj: GenericObject,
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): number {
   if (!keyColumn || typeof keyColumn !== "string") {
     throw new Error("Key column must be a non-empty string");
@@ -273,7 +296,7 @@ export function upsertObject(
     sheetName,
     header,
     spreadsheetIdOrURL,
-    true, // Preserve existing data
+    true // Preserve existing data
   );
   const keyColumnIndex = sheetHeader.indexOf(keyColumn);
   const dataRange = sheet.getDataRange();
@@ -298,7 +321,7 @@ export function upsertObjects(
   header: string[],
   keyColumn: string,
   objs: GenericObject[],
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): number {
   if (!keyColumn || typeof keyColumn !== "string") {
     throw new Error("Key column must be a non-empty string");
@@ -307,7 +330,7 @@ export function upsertObjects(
     throw new Error("Objects must be an array");
   }
   let upsertedCount = 0;
-  objs.forEach((obj) => {
+  objs.forEach(obj => {
     upsertObject(sheetName, header, keyColumn, obj, spreadsheetIdOrURL);
     upsertedCount++;
   });
@@ -319,7 +342,7 @@ export function replaceAll(
   sheetName: string,
   header: string[],
   objs: GenericObject[],
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): void {
   if (!objs || !Array.isArray(objs)) {
     throw new Error("Objects must be an array");
@@ -328,6 +351,7 @@ export function replaceAll(
   if (objs.length > 0) {
     appendObjects(sheetName, header, objs, spreadsheetIdOrURL);
   }
-  Logger.log(`Replaced all data in sheet "${sheetName}" with ${objs.length} object(s)`);
+  Logger.log(
+    `Replaced all data in sheet "${sheetName}" with ${objs.length} object(s)`
+  );
 }
-

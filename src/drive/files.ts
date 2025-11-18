@@ -2,7 +2,7 @@ import { getOrCreateFolderByPath } from "./folders";
 
 export function getFileByName(
   fileName: string,
-  targetFolder: GoogleAppsScript.Drive.Folder,
+  targetFolder: GoogleAppsScript.Drive.Folder
 ): GoogleAppsScript.Drive.File | null {
   if (!targetFolder) {
     throw new Error("Target folder is required");
@@ -21,7 +21,7 @@ export function getFileByName(
 
 export function findFile(
   folderPath: string,
-  fileName: string,
+  fileName: string
 ): GoogleAppsScript.Drive.File {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -33,7 +33,7 @@ export function findFile(
   const existingFile = getFileByName(fileName, targetFolder);
   if (!existingFile) {
     throw new Error(
-      `Document "${fileName}" not found in folder: "${folderPath}"`,
+      `Document "${fileName}" not found in folder: "${folderPath}"`
     );
   }
   Logger.log(`Document "${fileName}" found in folder "${folderPath}"`);
@@ -41,7 +41,7 @@ export function findFile(
 }
 
 export function getAllFilesInFolder(
-  folder: GoogleAppsScript.Drive.Folder,
+  folder: GoogleAppsScript.Drive.Folder
 ): GoogleAppsScript.Drive.File[] {
   if (!folder) {
     throw new Error("Folder is required");
@@ -55,9 +55,7 @@ export function getAllFilesInFolder(
   return files;
 }
 
-export function deleteFile(
-  file: GoogleAppsScript.Drive.File,
-): void {
+export function deleteFile(file: GoogleAppsScript.Drive.File): void {
   if (!file) {
     throw new Error("File is required");
   }
@@ -66,10 +64,7 @@ export function deleteFile(
   Logger.log(`File "${fileName}" deleted successfully`);
 }
 
-export function checkFileExists(
-  folderPath: string,
-  fileName: string,
-): boolean {
+export function checkFileExists(folderPath: string, fileName: string): boolean {
   if (!folderPath || typeof folderPath !== "string") {
     return false;
   }
@@ -85,7 +80,7 @@ export function checkFileExists(
 }
 
 export function getFileById(
-  fileId: string,
+  fileId: string
 ): GoogleAppsScript.Drive.File | null {
   if (!fileId || typeof fileId !== "string") {
     return null;
@@ -101,7 +96,7 @@ export function getFileById(
 
 export function getFilesByType(
   folder: GoogleAppsScript.Drive.Folder,
-  mimeType: string,
+  mimeType: string
 ): GoogleAppsScript.Drive.File[] {
   if (!folder) {
     throw new Error("Folder is required");
@@ -114,7 +109,8 @@ export function getFilesByType(
   while (fileIterator.hasNext()) {
     files.push(fileIterator.next());
   }
-  Logger.log(`Found ${files.length} file(s) of type "${mimeType}" in folder "${folder.getName()}"`);
+  Logger.log(
+    `Found ${files.length} file(s) of type "${mimeType}" in folder "${folder.getName()}"`
+  );
   return files;
 }
-

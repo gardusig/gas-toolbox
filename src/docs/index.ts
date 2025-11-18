@@ -16,24 +16,13 @@ export {
 } from "./paragraphs";
 
 // List operations
-export {
-  appendBulletedListToFile,
-  appendNumberedListToFile,
-} from "./lists";
+export { appendBulletedListToFile, appendNumberedListToFile } from "./lists";
 
 // Text manipulation
-export {
-  replaceTextInFile,
-} from "./text";
+export { replaceTextInFile } from "./text";
 
 // Element operations
-export {
-  insertTable,
-  insertImage,
-} from "./elements";
+export { insertTable, insertImage } from "./elements";
 
 // Formatting
-export {
-  formatParagraph,
-} from "./formatting";
-
+export { formatParagraph } from "./formatting";

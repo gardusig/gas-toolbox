@@ -49,4 +49,3 @@ global.SpreadsheetApp = {
 } as any;
 
 // Sheets module uses function-based API, no namespaces needed
-

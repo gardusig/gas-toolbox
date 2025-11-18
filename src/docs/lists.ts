@@ -4,7 +4,7 @@ import { formatParagraph } from "./formatting";
 export function appendBulletedListToFile(
   folderPath: string,
   fileName: string,
-  items: string[],
+  items: string[]
 ): GoogleAppsScript.Document.ListItem[] {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -17,7 +17,7 @@ export function appendBulletedListToFile(
   }
   if (items.length === 0) {
     Logger.log(
-      `No items provided for bulleted list in document "${fileName}". Skipping.`,
+      `No items provided for bulleted list in document "${fileName}". Skipping.`
     );
     return [];
   }
@@ -27,9 +27,9 @@ export function appendBulletedListToFile(
   const body = doc.getBody();
   const listItems: GoogleAppsScript.Document.ListItem[] = [];
 
-  items.forEach((item) => {
+  items.forEach(item => {
     if (typeof item !== "string") {
-      Logger.log(`Skipping non-string item: ${item}`);
+      Logger.log(`Skipping non-string item: ${String(item)}`);
       return;
     }
     const listItem = body.appendListItem(item);
@@ -40,7 +40,7 @@ export function appendBulletedListToFile(
 
   doc.saveAndClose();
   Logger.log(
-    `Bulleted list appended to document "${fileName}" in folder "${folderPath}"`,
+    `Bulleted list appended to document "${fileName}" in folder "${folderPath}"`
   );
 
   return listItems;
@@ -49,7 +49,7 @@ export function appendBulletedListToFile(
 export function appendNumberedListToFile(
   folderPath: string,
   fileName: string,
-  items: string[],
+  items: string[]
 ): GoogleAppsScript.Document.ListItem[] {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -62,7 +62,7 @@ export function appendNumberedListToFile(
   }
   if (items.length === 0) {
     Logger.log(
-      `No items provided for numbered list in document "${fileName}". Skipping.`,
+      `No items provided for numbered list in document "${fileName}". Skipping.`
     );
     return [];
   }
@@ -72,9 +72,9 @@ export function appendNumberedListToFile(
   const body = doc.getBody();
   const listItems: GoogleAppsScript.Document.ListItem[] = [];
 
-  items.forEach((item) => {
+  items.forEach(item => {
     if (typeof item !== "string") {
-      Logger.log(`Skipping non-string item: ${item}`);
+      Logger.log(`Skipping non-string item: ${String(item)}`);
       return;
     }
     const listItem = body.appendListItem(item);
@@ -85,9 +85,8 @@ export function appendNumberedListToFile(
 
   doc.saveAndClose();
   Logger.log(
-    `Numbered list appended to document "${fileName}" in folder "${folderPath}"`,
+    `Numbered list appended to document "${fileName}" in folder "${folderPath}"`
   );
 
   return listItems;
 }
-

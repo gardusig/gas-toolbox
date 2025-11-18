@@ -5,7 +5,7 @@ export function appendParagraphToFile(
   folderPath: string,
   fileName: string,
   content: string,
-  heading?: GoogleAppsScript.Document.ParagraphHeading,
+  heading?: GoogleAppsScript.Document.ParagraphHeading
 ): GoogleAppsScript.Document.Paragraph {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -13,7 +13,11 @@ export function appendParagraphToFile(
   if (!fileName || typeof fileName !== "string") {
     throw new Error("File name must be a non-empty string");
   }
-  if (content === null || content === undefined || typeof content !== "string") {
+  if (
+    content === null ||
+    content === undefined ||
+    typeof content !== "string"
+  ) {
     throw new Error("Content must be a string");
   }
   const file = findFile(folderPath, fileName);
@@ -52,7 +56,7 @@ export function appendParagraphToFile(
   formatParagraph(paragraph);
   doc.saveAndClose();
   Logger.log(
-    `Content appended to document "${fileName}" in folder "${folderPath}"`,
+    `Content appended to document "${fileName}" in folder "${folderPath}"`
   );
 
   return paragraph;
@@ -63,7 +67,7 @@ export function insertParagraphAtPosition(
   fileName: string,
   content: string,
   position: number,
-  heading?: GoogleAppsScript.Document.ParagraphHeading,
+  heading?: GoogleAppsScript.Document.ParagraphHeading
 ): GoogleAppsScript.Document.Paragraph {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -71,10 +75,18 @@ export function insertParagraphAtPosition(
   if (!fileName || typeof fileName !== "string") {
     throw new Error("File name must be a non-empty string");
   }
-  if (content === null || content === undefined || typeof content !== "string") {
+  if (
+    content === null ||
+    content === undefined ||
+    typeof content !== "string"
+  ) {
     throw new Error("Content must be a string");
   }
-  if (position === null || position === undefined || typeof position !== "number") {
+  if (
+    position === null ||
+    position === undefined ||
+    typeof position !== "number"
+  ) {
     throw new Error("Position must be a number");
   }
   if (position < 0) {
@@ -84,12 +96,12 @@ export function insertParagraphAtPosition(
   const doc = DocumentApp.openById(file.getId());
   const body = doc.getBody();
   const numChildren = body.getNumChildren();
-  
+
   // Clamp position to valid range
   const insertIndex = Math.min(position, numChildren);
-  
+
   const paragraph = body.insertParagraph(insertIndex, content);
-  
+
   if (heading !== undefined) {
     paragraph.setHeading(heading);
   }
@@ -97,7 +109,7 @@ export function insertParagraphAtPosition(
   formatParagraph(paragraph);
   doc.saveAndClose();
   Logger.log(
-    `Paragraph inserted at position ${insertIndex} in document "${fileName}" in folder "${folderPath}"`,
+    `Paragraph inserted at position ${insertIndex} in document "${fileName}" in folder "${folderPath}"`
   );
 
   return paragraph;
@@ -106,7 +118,7 @@ export function insertParagraphAtPosition(
 export function deleteParagraph(
   folderPath: string,
   fileName: string,
-  position: number,
+  position: number
 ): void {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -114,7 +126,11 @@ export function deleteParagraph(
   if (!fileName || typeof fileName !== "string") {
     throw new Error("File name must be a non-empty string");
   }
-  if (position === null || position === undefined || typeof position !== "number") {
+  if (
+    position === null ||
+    position === undefined ||
+    typeof position !== "number"
+  ) {
     throw new Error("Position must be a number");
   }
   if (position < 0) {
@@ -124,16 +140,20 @@ export function deleteParagraph(
   const doc = DocumentApp.openById(file.getId());
   const body = doc.getBody();
   const numChildren = body.getNumChildren();
-  
+
   if (position >= numChildren) {
-    throw new Error(`Position ${position} is out of bounds (document has ${numChildren} elements)`);
+    throw new Error(
+      `Position ${position} is out of bounds (document has ${numChildren} elements)`
+    );
   }
-  
+
   const child = body.getChild(position);
   if (child.getType() === DocumentApp.ElementType.PARAGRAPH) {
     body.removeChild(child);
     doc.saveAndClose();
-    Logger.log(`Paragraph at position ${position} deleted from document "${fileName}"`);
+    Logger.log(
+      `Paragraph at position ${position} deleted from document "${fileName}"`
+    );
   } else {
     doc.saveAndClose();
     throw new Error(`Element at position ${position} is not a paragraph`);
@@ -143,7 +163,7 @@ export function deleteParagraph(
 export function getParagraphAtPosition(
   folderPath: string,
   fileName: string,
-  position: number,
+  position: number
 ): GoogleAppsScript.Document.Paragraph | null {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -151,7 +171,11 @@ export function getParagraphAtPosition(
   if (!fileName || typeof fileName !== "string") {
     throw new Error("File name must be a non-empty string");
   }
-  if (position === null || position === undefined || typeof position !== "number") {
+  if (
+    position === null ||
+    position === undefined ||
+    typeof position !== "number"
+  ) {
     throw new Error("Position must be a number");
   }
   if (position < 0) {
@@ -161,26 +185,26 @@ export function getParagraphAtPosition(
   const doc = DocumentApp.openById(file.getId());
   const body = doc.getBody();
   const numChildren = body.getNumChildren();
-  
+
   if (position >= numChildren) {
     doc.saveAndClose();
     return null;
   }
-  
+
   const child = body.getChild(position);
   if (child.getType() === DocumentApp.ElementType.PARAGRAPH) {
     const paragraph = child.asParagraph();
     doc.saveAndClose();
     return paragraph;
   }
-  
+
   doc.saveAndClose();
   return null;
 }
 
 export function getParagraphCount(
   folderPath: string,
-  fileName: string,
+  fileName: string
 ): number {
   if (!folderPath || typeof folderPath !== "string") {
     throw new Error("Folder path must be a non-empty string");
@@ -203,4 +227,3 @@ export function getParagraphCount(
   Logger.log(`Document "${fileName}" has ${count} paragraph(s)`);
   return count;
 }
-

@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+
+# Source TypeScript files (we push compiled JS from dist/)
+src/
+tests/
+
+# Build configuration
+tsconfig.json
+tsconfig.test.json
+tsconfig.tsbuildinfo
+jest.config.ts
+.eslintrc.js
+.prettierrc
+.prettierignore
+.editorconfig
+
+# Package files
+package.json
+package-lock.json
+
+# CI/CD
+.github/
+
+# Scripts
+scripts/
+
+# Documentation
+README.md
+LICENSE
+
+# Coverage
+coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# Clasp files
+.clasp.json
+.clasprc.json
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+*.cache
+
+# Environment files
+.env
+.env.local
+

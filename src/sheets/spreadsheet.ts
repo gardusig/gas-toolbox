@@ -3,7 +3,7 @@ function isSpreadsheetUrl(value: string): boolean {
 }
 
 export function getSpreadsheet(
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): GoogleAppsScript.Spreadsheet.Spreadsheet | null {
   if (spreadsheetIdOrURL === null || spreadsheetIdOrURL === undefined) {
     return SpreadsheetApp.getActiveSpreadsheet();
@@ -28,7 +28,7 @@ export function getSpreadsheet(
 export function createSheet(
   sheetName: string,
   header: string[],
-  spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
+  spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet
 ): GoogleAppsScript.Spreadsheet.Sheet {
   if (!sheetName || typeof sheetName !== "string") {
     throw new Error("Sheet name must be a non-empty string");
@@ -43,8 +43,7 @@ export function createSheet(
     throw new Error("Spreadsheet is required");
   }
   const sheet =
-    spreadsheet.getSheetByName(sheetName) ??
-    spreadsheet.insertSheet(sheetName);
+    spreadsheet.getSheetByName(sheetName) ?? spreadsheet.insertSheet(sheetName);
   sheet.clear();
   sheet.appendRow(header);
   Logger.log(`Sheet "${sheetName}" created or updated with header`);
@@ -53,7 +52,7 @@ export function createSheet(
 
 export function getSheet(
   sheetName: string,
-  spreadsheetIdOrURL?: string,
+  spreadsheetIdOrURL?: string
 ): GoogleAppsScript.Spreadsheet.Sheet | null {
   if (!sheetName || typeof sheetName !== "string") {
     throw new Error("Sheet name must be a non-empty string");
@@ -65,4 +64,3 @@ export function getSheet(
   const sheet = spreadsheet.getSheetByName(sheetName);
   return sheet;
 }
-
