@@ -58,12 +58,41 @@ A comprehensive Google Apps Script library providing utilities for Drive, Docs, 
 
    ```bash
    npm run deploy
-   # or manually:
-   # clasp push
    ```
 
+   The deployment script (`scripts/deploy.js`) will:
+   - Validate that clasp is installed and configured
+   - Build the project (TypeScript → JavaScript)
+   - Verify build output exists
+   - Check what files will be pushed
+   - Deploy to Apps Script with force overwrite
+
+   **Available deployment commands:**
+   - `npm run deploy` - Build and deploy (force overwrite)
+   - `npm run deploy:check` - Build and deploy (ask for confirmation)
+   - `npm run deploy:skip-build` - Deploy without rebuilding (use with caution)
+   - `npm run deploy:tests` - Deploy integration test functions
+
+7. **Publish a version (optional):**
+
+   ```bash
+   # Publish next incremental version
+   npm run publish
+
+   # Publish a specific version number
+   npm run publish 5
+
+   # Publish a specific version with custom description
+   npm run publish 5 "v5.0.0 - Added new features"
+   ```
+
+   The publish script will:
+   - Get the latest version number from Apps Script
+   - Build and deploy the code
+   - Create a new version with the specified number (or auto-increment if not specified)
+
    The `.claspignore` file ensures only the compiled `dist/` files and `appsscript.json` are pushed to Apps Script, excluding:
-   - Source TypeScript files (`src/`, `tests/`)
+   - Source TypeScript files (`src/`, `tests/`, `integration-tests/`)
    - Build configuration files
    - Node modules and dependencies
    - CI/CD configurations
@@ -94,6 +123,26 @@ A comprehensive Google Apps Script library providing utilities for Drive, Docs, 
    ```typescript
    const folder = GasToolbox.getOrCreateFolderByPath("MyFolder");
    ```
+
+### Integration Testing
+
+The `integration-tests/` folder contains test functions that can be run in your Apps Script project to verify the deployed library works correctly.
+
+**Setting up integration tests:**
+
+1. Deploy your library: `npm run deploy`
+2. Open your Apps Script project: `clasp open`
+3. Copy test functions from `integration-tests/test-functions.js` into your Apps Script editor
+4. Run test functions in the editor or via `clasp run functionName`
+
+**Available test functions:**
+- `testDriveFolderOperations()` - Tests Drive folder operations
+- `testDriveFileOperations()` - Tests Drive file operations
+- `testDocsOperations()` - Tests Docs operations
+- `testSheetsOperations()` - Tests Sheets operations (requires active spreadsheet)
+- `runAllIntegrationTests()` - Runs all integration tests
+
+For detailed instructions, see `integration-tests/README.md` and `integration-tests/manual-tests.md`.
 
 ## Usage Examples
 

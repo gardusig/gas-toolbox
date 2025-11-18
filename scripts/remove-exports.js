@@ -41,6 +41,10 @@ jsFiles.forEach(filePath => {
   // Remove export statements like: export { ... };
   content = content.replace(/export\s*\{[^}]*\}\s*;?\s*/g, '');
   
+  // Remove import/export statements with from clauses
+  // Match: { ... } from "..."
+  content = content.replace(/^\s*\{[^}]*\}\s+from\s+['"][^'"]+['"];?\s*$/gm, '');
+  
   // Remove standalone object literal statements left after removing export
   // Match: { Identifier }; on its own line
   content = content.replace(/^\s*\{[^}]*\}\s*;\s*$/gm, '');

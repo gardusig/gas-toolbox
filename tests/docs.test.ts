@@ -179,9 +179,9 @@ describe("Docs Module", () => {
       const body = mockDoc.getBody();
       const paragraph = createMockParagraph();
       body.getNumChildren = jest.fn(() => 0); // Empty document
-      body.appendParagraph = jest.fn((text: string) => paragraph) as any;
+      body.appendParagraph = jest.fn((_text: string) => paragraph) as any;
       body.insertParagraph = jest.fn(
-        (index: number, text: string) => paragraph
+        (_index: number, _text: string) => paragraph
       ) as any;
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
@@ -206,7 +206,7 @@ describe("Docs Module", () => {
       const emptyParagraph = createMockParagraph("");
       const body = mockDoc.getBody();
       body.getNumChildren = jest.fn(() => 1);
-      body.getChild = jest.fn((index: number) => emptyParagraph) as any;
+      body.getChild = jest.fn((_index: number) => emptyParagraph) as any;
       emptyParagraph.getType = jest.fn(() => "PARAGRAPH");
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
@@ -230,9 +230,9 @@ describe("Docs Module", () => {
       const body = mockDoc.getBody();
       const paragraph = createMockParagraph();
       body.getNumChildren = jest.fn(() => 0); // Empty document
-      paragraph.setHeading = jest.fn((heading: any) => paragraph) as any;
+      paragraph.setHeading = jest.fn((_heading: any) => paragraph) as any;
       body.insertParagraph = jest.fn(
-        (index: number, text: string) => paragraph
+        (_index: number, _text: string) => paragraph
       ) as any;
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
@@ -345,7 +345,7 @@ describe("Docs Module", () => {
       const body = mockDoc.getBody();
       const lastParagraph = createMockParagraph("Existing content");
       body.getNumChildren = jest.fn(() => 1);
-      body.getChild = jest.fn((index: number) => lastParagraph) as any;
+      body.getChild = jest.fn((_index: number) => lastParagraph) as any;
       lastParagraph.getType = jest.fn(() => "PARAGRAPH");
       const newParagraph = createMockParagraph();
       body.appendParagraph = jest.fn(() => newParagraph) as any;
@@ -785,7 +785,7 @@ describe("Docs Module", () => {
       const paragraph = createMockParagraph("Hello {{name}}");
       paragraph.setText = jest.fn();
       body.getNumChildren = jest.fn(() => 1);
-      body.getChild = jest.fn((index: number) => paragraph) as any;
+      body.getChild = jest.fn((_index: number) => paragraph) as any;
       paragraph.getType = jest.fn(() => "PARAGRAPH");
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
@@ -816,7 +816,7 @@ describe("Docs Module", () => {
       const paragraph = createMockParagraph("Hello {{name}}, hello {{name}}");
       paragraph.setText = jest.fn();
       body.getNumChildren = jest.fn(() => 1);
-      body.getChild = jest.fn((index: number) => paragraph) as any;
+      body.getChild = jest.fn((_index: number) => paragraph) as any;
       paragraph.getType = jest.fn(() => "PARAGRAPH");
 
       (global.DocumentApp as any).openById = jest.fn(() => mockDoc);
@@ -1137,7 +1137,7 @@ describe("Docs Module", () => {
       const mockDoc = createMockDocument("Report", "doc-id");
       const body = mockDoc.getBody();
       const tableRow: any = {
-        appendTableCell: jest.fn((text?: string) => ({
+        appendTableCell: jest.fn((_text?: string) => ({
           setText: jest.fn(),
         })),
       };
@@ -1168,7 +1168,7 @@ describe("Docs Module", () => {
       const mockDoc = createMockDocument("Report", "doc-id");
       const body = mockDoc.getBody();
       const cell1: any = { setText: jest.fn() };
-      const cell2: any = { setText: jest.fn() };
+      const _cell2: any = { setText: jest.fn() };
       const tableRow: any = {
         appendTableCell: jest.fn((text?: string) => {
           if (!text) return cell1;

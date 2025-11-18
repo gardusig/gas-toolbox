@@ -1,56 +1,62 @@
-# Dependencies
-node_modules/
+# Ignore everything by default
+*
 
-# Source TypeScript files (we push compiled JS from dist/)
-src/
-tests/
-
-# Build configuration
-tsconfig.json
-tsconfig.test.json
-tsconfig.tsbuildinfo
-jest.config.ts
-.eslintrc.js
-.prettierrc
-.prettierignore
-.editorconfig
-
-# Package files
-package.json
-package-lock.json
-
-# CI/CD
-.github/
-
-# Scripts
-scripts/
-
-# Documentation
-README.md
-LICENSE
-
-# Coverage
+# Explicitly ignore all directories we don't want
 coverage/
-
-# IDE
+coverage/**
+src/
+src/**
+tests/
+tests/**
+integration-tests/
+integration-tests/**
+node_modules/
+node_modules/**
+scripts/
+scripts/**
+.git/
+.git/**
+.github/
+.github/**
 .vscode/
 .idea/
 
-# Git
-.git/
+# Ignore all config and dev files at root
+.claspignore
+.prettierrc
+.prettierignore
+.editorconfig
+.eslintrc.js
 .gitignore
+jest.config.ts
+tsconfig.json
+tsconfig.test.json
+tsconfig.tsbuildinfo
+package.json
+package-lock.json
+README.md
+LICENSE
+appsscript.json
+test-functions.gs
 
-# Clasp files
-.clasp.json
-.clasprc.json
-
-# Temporary files
+# Ignore file types globally
+*.map
+**/*.map
+*.js.map
+**/*.js.map
+*.d.ts
+**/*.d.ts
 *.log
 *.tmp
 *.temp
 *.cache
+.env*
 
-# Environment files
-.env
-.env.local
+# Allow dist/ directory ONLY
+!dist/
 
+# Ignore non-JS files inside dist/ (must come after !dist/)
+dist/**/*.map
+dist/**/*.js.map
+dist/**/*.d.ts
+dist/.clasp.json

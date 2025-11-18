@@ -537,7 +537,7 @@ describe("Drive Module", () => {
     });
 
     it("should return false on error", () => {
-      const rootFolder = createMockFolder("root");
+      const _rootFolder = createMockFolder("root");
       (global.DriveApp as any).getRootFolder = jest.fn(() => {
         throw new Error("Access denied");
       });
@@ -616,7 +616,7 @@ describe("Drive Module", () => {
     });
 
     it("should return false on error", () => {
-      const rootFolder = createMockFolder("root");
+      const _rootFolder = createMockFolder("root");
       (global.DriveApp as any).getRootFolder = jest.fn(() => {
         throw new Error("Access denied");
       });

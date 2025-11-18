@@ -67,7 +67,7 @@ export function createMockFile(
     getUrl: jest.fn(() => url),
     moveTo: jest.fn(),
     setName: jest.fn(),
-    makeCopy: jest.fn((newName: string, destination: any): any => {
+    makeCopy: jest.fn((newName: string, _destination: any): any => {
       return createMockFile(newName, `copied-${id}`, url);
     }),
   };
@@ -107,7 +107,7 @@ export function createMockDocument(
       paragraphs.push(table);
       return table;
     }),
-    appendImage: jest.fn((blob: any) => {
+    appendImage: jest.fn((_blob: any) => {
       const image: any = {
         setWidth: jest.fn(),
         setHeight: jest.fn(),
@@ -154,7 +154,7 @@ export function createMockParagraph(text: string = "") {
     setText: jest.fn((newText: string) => {
       text = newText;
     }),
-    setHeading: jest.fn(function (heading: any) {
+    setHeading: jest.fn(function (_heading: any) {
       return this;
     }),
     setAttributes: jest.fn(),
@@ -173,7 +173,7 @@ export function createMockListItem(text: string = "") {
       text = newText;
     }),
     setGlyphType: jest.fn(),
-    setHeading: jest.fn(function (heading: any) {
+    setHeading: jest.fn(function (_heading: any) {
       return this;
     }),
     setAttributes: jest.fn(),
@@ -201,7 +201,7 @@ export function createMockSheet(name: string, header: string[] = []) {
       getValues: jest.fn(() => rows),
     })),
     getRange: jest.fn(
-      (row: number, col: number, numRows?: number, numCols?: number) => {
+      (row: number, col: number, numRows?: number, _numCols?: number) => {
         const rangeRows = rows.slice(row - 1, row - 1 + (numRows || 1));
         return {
           setValues: jest.fn((values: any[][]) => {

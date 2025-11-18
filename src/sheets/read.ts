@@ -13,17 +13,24 @@ function deepCopy<T extends Record<string, any> | any[]>(
   if (obj === null || typeof obj !== "object") {
     return obj;
   }
+  // This path is defensive and not reachable through public API (HeaderMap is Record<string, number>)
+  /* istanbul ignore if */
   if (Array.isArray(obj)) {
-    // This path is defensive and not reachable through public API (HeaderMap is Record<string, number>)
-    /* istanbul ignore next */
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return obj.map(element => deepCopy(element)) as T;
   }
   const newObj = {} as T;
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-      newObj[key] = deepCopy((obj as Record<string, unknown>)[key] as T);
+      const value = (obj as Record<string, unknown>)[key];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      newObj[key] = deepCopy(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        value as Record<string, any> | any[] | null
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ) as any;
     }
   }
   return newObj;
