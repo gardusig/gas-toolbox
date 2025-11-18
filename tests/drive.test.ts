@@ -728,16 +728,28 @@ describe("Drive Module", () => {
       expect(result).toBeNull();
     });
 
-    it("should throw error if parentFolder is null", () => {
-      expect(() => {
-        getFolderByName("2024", null as any);
-      }).toThrow("Parent folder is required");
+    it("should search from root folder if parentFolder not provided", () => {
+      const rootFolder = createMockFolder("root");
+      const folder = createMockFolder("2024");
+      rootFolder._addFolder(folder);
+      (global.DriveApp as any).getRootFolder = jest.fn(() => rootFolder);
+
+      const result = getFolderByName("2024");
+
+      expect(global.DriveApp.getRootFolder).toHaveBeenCalled();
+      expect(rootFolder.getFoldersByName).toHaveBeenCalledWith("2024");
+      expect(result).toBe(folder);
     });
 
-    it("should throw error if parentFolder is undefined", () => {
-      expect(() => {
-        getFolderByName("2024", undefined as any);
-      }).toThrow("Parent folder is required");
+    it("should return null when searching from root if folder not found", () => {
+      const rootFolder = createMockFolder("root");
+      (global.DriveApp as any).getRootFolder = jest.fn(() => rootFolder);
+
+      const result = getFolderByName("2024");
+
+      expect(global.DriveApp.getRootFolder).toHaveBeenCalled();
+      expect(rootFolder.getFoldersByName).toHaveBeenCalledWith("2024");
+      expect(result).toBeNull();
     });
   });
 

@@ -89,19 +89,17 @@ export function getFolderById(
 
 export function getFolderByName(
   folderName: string,
-  parentFolder: GoogleAppsScript.Drive.Folder
+  parentFolder?: GoogleAppsScript.Drive.Folder
 ): GoogleAppsScript.Drive.Folder | null {
-  if (!parentFolder) {
-    throw new Error("Parent folder is required");
-  }
   if (!folderName || typeof folderName !== "string") {
     return null;
   }
-  const folderIterator = parentFolder.getFoldersByName(folderName);
+  const targetFolder = parentFolder || DriveApp.getRootFolder();
+  const folderIterator = targetFolder.getFoldersByName(folderName);
   if (folderIterator.hasNext()) {
     const folder = folderIterator.next();
     Logger.log(
-      `Folder "${folderName}" found in folder "${parentFolder.getName()}"`
+      `Folder "${folderName}" found in folder "${targetFolder.getName()}"`
     );
     return folder;
   }

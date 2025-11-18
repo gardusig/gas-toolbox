@@ -177,7 +177,9 @@ GASToolbox.renameFolder(folder, "NewName");
 
 // Move folder
 const targetFolder = GASToolbox.getFolderById("target-folder-id");
-GASToolbox.moveFolder(folder, targetFolder);
+if (targetFolder) {
+  GASToolbox.moveFolder(folder, targetFolder);
+}
 ```
 
 #### Files

@@ -25,7 +25,9 @@ export function moveFile(
     throw new Error("File is required");
   }
   if (!destinationFolder) {
-    throw new Error("Destination folder is required");
+    throw new Error(
+      "Destination folder is required. The folder may not exist - check that the folder ID is correct or that the folder was found successfully."
+    );
   }
   const fileName = file.getName();
   file.moveTo(destinationFolder);
@@ -72,7 +74,9 @@ export function moveFolder(
     throw new Error("Folder is required");
   }
   if (!destinationFolder) {
-    throw new Error("Destination folder is required");
+    throw new Error(
+      "Destination folder is required. The folder may not exist - check that the folder ID is correct or that the folder was found successfully."
+    );
   }
   const folderName = folder.getName();
   folder.moveTo(destinationFolder);
