@@ -231,6 +231,13 @@ function docsExample() {
     "Third priority"
   ]);
 
+  // Add more content with text we'll replace later
+  Toolbox.appendParagraphToFile(
+    "MyProjects/2024/Reports",
+    "Monthly Report",
+    "Task: Review quarterly results"
+  );
+
   // Insert paragraph at specific position
   Toolbox.insertParagraphAtPosition(
     "MyProjects/2024/Reports",
@@ -247,7 +254,7 @@ function docsExample() {
   const paragraphCount = Toolbox.getParagraphCount("MyProjects/2024/Reports", "Monthly Report");
   console.log("📊 Paragraph count:", paragraphCount);
 
-  // Replace text in document
+  // Replace text in document (regex-compatible)
   const replacedCount = Toolbox.replaceTextInFile(
     "MyProjects/2024/Reports",
     "Monthly Report",
@@ -266,7 +273,14 @@ function docsExample() {
   // Format paragraph
   if (paragraph) {
     Toolbox.formatParagraph(paragraph, "Arial"); // font family
+    console.log("✅ Paragraph formatted");
   }
+
+  // Print summary
+  console.log("\n📋 Summary:");
+  console.log("- Document:", doc.getName());
+  console.log("- Paragraphs:", paragraphCount);
+  console.log("- Text replacements:", replacedCount);
 }
 ```
 
@@ -325,7 +339,7 @@ function sheetsExample() {
   );
   console.log("🔍 Found employee:", employee);
 
-  // Update an employee
+  // Update an employee (find index first, then update)
   if (employee) {
     const index = Toolbox.findObjectIndex("Employees", emp => emp.email === "john@example.com");
     if (index !== -1) {
@@ -335,6 +349,7 @@ function sheetsExample() {
         email: "john@example.com",
         status: "active"
       });
+      console.log("✅ Employee updated at index", index);
     }
   }
 
@@ -352,6 +367,13 @@ function sheetsExample() {
   // Get distinct values
   const statuses = Toolbox.getDistinctValues("Employees", "status");
   console.log("📋 Unique statuses:", statuses);
+
+  // Print summary
+  console.log("\n📋 Summary:");
+  console.log("- Total employees:", totalEmployees);
+  console.log("- Active employees:", activeEmployees.length);
+  console.log("- Average age:", averageAge);
+  console.log("- Statuses:", statuses.join(", "));
 }
 ```
 
