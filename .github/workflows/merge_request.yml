@@ -1,0 +1,39 @@
+name: Merge Request CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  quality-checks:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage to artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/coverage-summary.json
+          retention-days: 30
+
