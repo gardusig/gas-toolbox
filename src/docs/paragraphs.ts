@@ -194,7 +194,8 @@ export function getParagraphAtPosition(
   const child = body.getChild(position);
   if (child.getType() === DocumentApp.ElementType.PARAGRAPH) {
     const paragraph = child.asParagraph();
-    doc.saveAndClose();
+    // Don't close the document - the paragraph reference needs the document to be open
+    // The document will be saved when formatParagraph or other operations are called
     return paragraph;
   }
 

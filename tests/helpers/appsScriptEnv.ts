@@ -80,19 +80,30 @@ export function createMockDocument(
 ) {
   const paragraphs: any[] = [];
 
-  const body = {
+  const mockDoc: any = {
+    getId: jest.fn(() => id),
+    getName: jest.fn(() => name),
+    getUrl: jest.fn(() => url),
+    saveAndClose: jest.fn(),
+    _getParagraphs: () => paragraphs,
+  };
+
+  const body: any = {
     appendParagraph: jest.fn((text: string) => {
       const paragraph = createMockParagraph(text);
+      paragraph.getParent = jest.fn(() => body);
       paragraphs.push(paragraph);
       return paragraph;
     }),
     appendListItem: jest.fn((text: string) => {
       const listItem = createMockListItem(text);
+      listItem.getParent = jest.fn(() => body);
       paragraphs.push(listItem);
       return listItem;
     }),
     insertParagraph: jest.fn((index: number, text: string) => {
       const paragraph = createMockParagraph(text);
+      paragraph.getParent = jest.fn(() => body);
       paragraphs.splice(index, 0, paragraph);
       return paragraph;
     }),
@@ -125,7 +136,13 @@ export function createMockDocument(
       paragraphs.length = 0;
     }),
     getNumChildren: jest.fn(() => paragraphs.length),
-    getChild: jest.fn((index: number) => paragraphs[index]),
+    getChild: jest.fn((index: number) => {
+      const child = paragraphs[index];
+      if (child && typeof child.getParent !== 'function') {
+        child.getParent = jest.fn(() => body);
+      }
+      return child;
+    }),
     getText: jest.fn(() =>
       paragraphs
         .map(p => {
@@ -136,20 +153,18 @@ export function createMockDocument(
         })
         .join("\n")
     ),
+    getType: jest.fn(() => "BODY_SECTION"),
+    asBody: jest.fn(() => body),
+    getParent: jest.fn(() => mockDoc),
   };
 
-  return {
-    getId: jest.fn(() => id),
-    getName: jest.fn(() => name),
-    getUrl: jest.fn(() => url),
-    getBody: jest.fn(() => body),
-    saveAndClose: jest.fn(),
-    _getParagraphs: () => paragraphs,
-  };
+  mockDoc.getBody = jest.fn(() => body);
+  
+  return mockDoc;
 }
 
 export function createMockParagraph(text: string = "") {
-  return {
+  const mockParagraph: any = {
     getText: jest.fn(() => text),
     setText: jest.fn((newText: string) => {
       text = newText;
@@ -163,11 +178,13 @@ export function createMockParagraph(text: string = "") {
     asParagraph: jest.fn(function () {
       return this;
     }),
+    getParent: jest.fn(),
   };
+  return mockParagraph;
 }
 
 export function createMockListItem(text: string = "") {
-  return {
+  const mockListItem: any = {
     getText: jest.fn(() => text),
     setText: jest.fn((newText: string) => {
       text = newText;
@@ -185,7 +202,9 @@ export function createMockListItem(text: string = "") {
     asListItem: jest.fn(function () {
       return this;
     }),
+    getParent: jest.fn(),
   };
+  return mockListItem;
 }
 
 export function createMockSheet(name: string, header: string[] = []) {

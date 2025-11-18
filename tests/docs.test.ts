@@ -1502,7 +1502,8 @@ describe("Docs Module", () => {
       const result = getParagraphAtPosition("Projects", "Report", 1);
 
       expect(result).toBe(paragraph);
-      expect(mockDoc.saveAndClose).toHaveBeenCalled();
+      // Document is not closed when returning a paragraph (to allow formatting)
+      expect(mockDoc.saveAndClose).not.toHaveBeenCalled();
     });
 
     it("should return null if position is out of bounds", () => {
