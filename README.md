@@ -141,42 +141,49 @@ function foldersAndFilesExample() {
   // Create a subfolder
   const subFolder = Toolbox.createFolder("Archive", folder);
   
+  // Create a document to work with (Google Docs files don't have .docx extension)
+  const doc = Toolbox.createDocument("MyProjects/2024/Reports", "My Report");
+  console.log("✅ Document created:", doc.getName());
+
   // Get all files in a folder
   const files = Toolbox.getAllFilesInFolder(folder);
   console.log("📁 Files in folder:", files.length);
 
-  // Find a file by name
-  const file = Toolbox.getFileByName("Report.docx", folder);
+  // Find a file by name (no extension needed for Google Docs)
+  const file = Toolbox.getFileByName("My Report", folder);
   
   // Find file by path
-  const fileByPath = Toolbox.findFile("MyProjects/2024/Reports", "Report.docx");
+  const fileByPath = Toolbox.findFile("MyProjects/2024/Reports", "My Report");
   
   // Get files by type (e.g., PDFs)
   const pdfFiles = Toolbox.getFilesByType("application/pdf", folder);
   
   // Check if file exists
-  const fileExists = Toolbox.checkFileExists("MyProjects/2024/Reports", "Report.docx");
+  const fileExists = Toolbox.checkFileExists("MyProjects/2024/Reports", "My Report");
+  console.log("📋 File exists:", fileExists);
   
   // Copy a file
   if (file) {
-    const copiedFile = Toolbox.copyFile(file, folder, "Copy of Report.docx");
+    const copiedFile = Toolbox.copyFile(file, folder, "Copy of My Report");
     console.log("📋 File copied:", copiedFile.getName());
   }
   
   // Move a file to another folder
   if (file && subFolder) {
     Toolbox.moveFile(file, subFolder);
+    console.log("📦 File moved to Archive folder");
   }
   
   // Rename a file
   if (file) {
-    Toolbox.renameFile(file, "Renamed Report.docx");
+    Toolbox.renameFile(file, "Renamed Report");
+    console.log("✏️ File renamed");
   }
   
-  // Delete a file
-  if (file) {
-    Toolbox.deleteFile(file);
-  }
+  // Delete a file (optional cleanup)
+  // if (file) {
+  //   Toolbox.deleteFile(file);
+  // }
 }
 ```
 
@@ -387,11 +394,14 @@ if (targetFolder) {
 // First, get or create a folder
 const folder = Toolbox.getOrCreateFolderByPath("Projects/2024");
 
-// Find file by name in a folder
-const file = Toolbox.getFileByName("Report.docx", folder);
+// Create a document first (Google Docs files don't have .docx extension)
+const doc = Toolbox.createDocument("Projects/2024", "My Report");
+
+// Find file by name in a folder (no extension needed for Google Docs)
+const file = Toolbox.getFileByName("My Report", folder);
 
 // Find file by path (throws error if not found)
-const fileByPath = Toolbox.findFile("Projects/2024", "Report.docx");
+const fileByPath = Toolbox.findFile("Projects/2024", "My Report");
 
 // Get file by ID
 const fileById = Toolbox.getFileById("file-id-123");
@@ -403,16 +413,16 @@ const pdfFiles = Toolbox.getFilesByType("application/pdf", folder);
 const files = Toolbox.getAllFilesInFolder(folder);
 
 // Check if file exists
-const fileExists = Toolbox.checkFileExists("Projects/2024", "Report.docx");
+const fileExists = Toolbox.checkFileExists("Projects/2024", "My Report");
 
 // Copy file
-const copiedFile = Toolbox.copyFile(file, folder, "Copy of Report.docx");
+const copiedFile = Toolbox.copyFile(file, folder, "Copy of My Report");
 
 // Move file
 Toolbox.moveFile(file, folder);
 
 // Rename file
-Toolbox.renameFile(file, "NewName.docx");
+Toolbox.renameFile(file, "Renamed Report");
 
 // Delete file
 Toolbox.deleteFile(file);
