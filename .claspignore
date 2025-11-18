@@ -8,8 +8,6 @@ src/
 src/**
 tests/
 tests/**
-integration-tests/
-integration-tests/**
 node_modules/
 node_modules/**
 scripts/

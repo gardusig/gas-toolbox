@@ -71,7 +71,6 @@ A comprehensive Google Apps Script library providing utilities for Drive, Docs, 
    - `npm run deploy` - Build and deploy (force overwrite)
    - `npm run deploy:check` - Build and deploy (ask for confirmation)
    - `npm run deploy:skip-build` - Deploy without rebuilding (use with caution)
-   - `npm run deploy:tests` - Deploy integration test functions
 
 7. **Publish a version (optional):**
 
@@ -92,7 +91,7 @@ A comprehensive Google Apps Script library providing utilities for Drive, Docs, 
    - Create a new version with the specified number (or auto-increment if not specified)
 
    The `.claspignore` file ensures only the compiled `dist/` files and `appsscript.json` are pushed to Apps Script, excluding:
-   - Source TypeScript files (`src/`, `tests/`, `integration-tests/`)
+   - Source TypeScript files (`src/`, `tests/`)
    - Build configuration files
    - Node modules and dependencies
    - CI/CD configurations
@@ -116,33 +115,13 @@ A comprehensive Google Apps Script library providing utilities for Drive, Docs, 
    - Go to **Extensions** → **Apps Script library**
    - Click **Add a library**
    - Paste your Script ID
-   - Set a library identifier (e.g., `GASToolbox`)
+   - Set a library identifier (e.g., `Toolbox`)
    - Click **Add**
 
 3. Use the library in your code:
    ```typescript
-   const folder = GASToolbox.getOrCreateFolderByPath("MyFolder");
+   const folder = Toolbox.getOrCreateFolderByPath("MyFolder");
    ```
-
-### Integration Testing
-
-The `integration-tests/` folder contains test functions that can be run in your Apps Script project to verify the deployed library works correctly.
-
-**Setting up integration tests:**
-
-1. Deploy your library: `npm run deploy`
-2. Open your Apps Script project: `clasp open`
-3. Copy test functions from `integration-tests/test-functions.js` into your Apps Script editor
-4. Run test functions in the editor or via `clasp run functionName`
-
-**Available test functions:**
-- `testDriveFolderOperations()` - Tests Drive folder operations
-- `testDriveFileOperations()` - Tests Drive file operations
-- `testDocsOperations()` - Tests Docs operations
-- `testSheetsOperations()` - Tests Sheets operations (requires active spreadsheet)
-- `runAllIntegrationTests()` - Runs all integration tests
-
-For detailed instructions, see `integration-tests/README.md` and `integration-tests/manual-tests.md`.
 
 ## Usage Examples
 
@@ -152,33 +131,33 @@ For detailed instructions, see `integration-tests/README.md` and `integration-te
 
 ```typescript
 // Create or get folder by path (creates nested structure automatically)
-const folder = GASToolbox.getOrCreateFolderByPath("Projects/2024/January");
+const folder = Toolbox.getOrCreateFolderByPath("Projects/2024/January");
 
 // Get folder by ID
-const folderById = GASToolbox.getFolderById("folder-id-123");
+const folderById = Toolbox.getFolderById("folder-id-123");
 
 // Get folder by name (searches from root)
-const folderByName = GASToolbox.getFolderByName("MyFolder");
+const folderByName = Toolbox.getFolderByName("MyFolder");
 
 // Create folder in a specific location
-const newFolder = GASToolbox.createFolder("NewFolder", folder);
+const newFolder = Toolbox.createFolder("NewFolder", folder);
 
 // Get all folders in a folder
-const folders = GASToolbox.getAllFoldersInFolder(folder);
+const folders = Toolbox.getAllFoldersInFolder(folder);
 
 // Check if folder exists
-const exists = GASToolbox.checkFolderExists("Projects/2024");
+const exists = Toolbox.checkFolderExists("Projects/2024");
 
 // Delete folder
-GASToolbox.deleteFolder(folder);
+Toolbox.deleteFolder(folder);
 
 // Rename folder
-GASToolbox.renameFolder(folder, "NewName");
+Toolbox.renameFolder(folder, "NewName");
 
 // Move folder
-const targetFolder = GASToolbox.getFolderById("target-folder-id");
+const targetFolder = Toolbox.getFolderById("target-folder-id");
 if (targetFolder) {
-  GASToolbox.moveFolder(folder, targetFolder);
+  Toolbox.moveFolder(folder, targetFolder);
 }
 ```
 
@@ -186,34 +165,34 @@ if (targetFolder) {
 
 ```typescript
 // Find file by name in a folder
-const file = GASToolbox.getFileByName("Report.docx", folder);
+const file = Toolbox.getFileByName("Report.docx", folder);
 
 // Find file by path (throws error if not found)
-const fileByPath = GASToolbox.findFile("Projects/2024", "Report.docx");
+const fileByPath = Toolbox.findFile("Projects/2024", "Report.docx");
 
 // Get file by ID
-const fileById = GASToolbox.getFileById("file-id-123");
+const fileById = Toolbox.getFileById("file-id-123");
 
 // Get files by type (MIME type)
-const pdfFiles = GASToolbox.getFilesByType("application/pdf", folder);
+const pdfFiles = Toolbox.getFilesByType("application/pdf", folder);
 
 // Get all files in a folder
-const files = GASToolbox.getAllFilesInFolder(folder);
+const files = Toolbox.getAllFilesInFolder(folder);
 
 // Check if file exists
-const fileExists = GASToolbox.checkFileExists("Projects/2024", "Report.docx");
+const fileExists = Toolbox.checkFileExists("Projects/2024", "Report.docx");
 
 // Copy file
-const copiedFile = GASToolbox.copyFile(file, folder, "Copy of Report.docx");
+const copiedFile = Toolbox.copyFile(file, folder, "Copy of Report.docx");
 
 // Move file
-GASToolbox.moveFile(file, folder);
+Toolbox.moveFile(file, folder);
 
 // Rename file
-GASToolbox.renameFile(file, "NewName.docx");
+Toolbox.renameFile(file, "NewName.docx");
 
 // Delete file
-GASToolbox.deleteFile(file);
+Toolbox.deleteFile(file);
 ```
 
 ### Docs Functions
@@ -222,33 +201,33 @@ GASToolbox.deleteFile(file);
 
 ```typescript
 // Create document (creates folders automatically)
-const doc = GASToolbox.createDocument("Reports/2024", "Monthly Summary");
+const doc = Toolbox.createDocument("Reports/2024", "Monthly Summary");
 
 // Get document content as text
-const content = GASToolbox.getDocumentContent(
+const content = Toolbox.getDocumentContent(
   "Reports/2024",
   "Monthly Summary"
 );
 
 // Clear all document content
-GASToolbox.clearDocument("Reports/2024", "Monthly Summary");
+Toolbox.clearDocument("Reports/2024", "Monthly Summary");
 
 // Ensure folder exists
-const folder = GASToolbox.ensureFolder("Projects/2024/Q1");
+const folder = Toolbox.ensureFolder("Projects/2024/Q1");
 ```
 
 #### Paragraphs
 
 ```typescript
 // Append paragraph
-GASToolbox.appendParagraphToFile(
+Toolbox.appendParagraphToFile(
   "Reports/2024",
   "Monthly Summary",
   "Hello World!"
 );
 
 // Append paragraph with heading
-GASToolbox.appendParagraphToFile(
+Toolbox.appendParagraphToFile(
   "Reports/2024",
   "Monthly Summary",
   "Title",
@@ -256,7 +235,7 @@ GASToolbox.appendParagraphToFile(
 );
 
 // Insert paragraph at position
-GASToolbox.insertParagraphAtPosition(
+Toolbox.insertParagraphAtPosition(
   "Reports/2024",
   "Monthly Summary",
   0,
@@ -264,31 +243,31 @@ GASToolbox.insertParagraphAtPosition(
 );
 
 // Get paragraph at position
-const paragraph = GASToolbox.getParagraphAtPosition(
+const paragraph = Toolbox.getParagraphAtPosition(
   "Reports/2024",
   "Monthly Summary",
   0
 );
 
 // Get paragraph count
-const count = GASToolbox.getParagraphCount("Reports/2024", "Monthly Summary");
+const count = Toolbox.getParagraphCount("Reports/2024", "Monthly Summary");
 
 // Delete paragraph at position
-GASToolbox.deleteParagraph("Reports/2024", "Monthly Summary", 0);
+Toolbox.deleteParagraph("Reports/2024", "Monthly Summary", 0);
 ```
 
 #### Lists
 
 ```typescript
 // Append bulleted list
-GASToolbox.appendBulletedListToFile("Reports/2024", "Monthly Summary", [
+Toolbox.appendBulletedListToFile("Reports/2024", "Monthly Summary", [
   "Item 1",
   "Item 2",
   "Item 3",
 ]);
 
 // Append numbered list
-GASToolbox.appendNumberedListToFile("Reports/2024", "Monthly Summary", [
+Toolbox.appendNumberedListToFile("Reports/2024", "Monthly Summary", [
   "First",
   "Second",
   "Third",
@@ -299,7 +278,7 @@ GASToolbox.appendNumberedListToFile("Reports/2024", "Monthly Summary", [
 
 ```typescript
 // Replace text (regex-compatible)
-const count = GASToolbox.replaceTextInFile(
+const count = Toolbox.replaceTextInFile(
   "Templates",
   "Invoice Template",
   "{{customer_name}}",
@@ -307,7 +286,7 @@ const count = GASToolbox.replaceTextInFile(
 );
 
 // Insert table
-const table = GASToolbox.insertTable(
+const table = Toolbox.insertTable(
   "Reports/2024",
   "Monthly Summary",
   [
@@ -319,7 +298,7 @@ const table = GASToolbox.insertTable(
 );
 
 // Insert image
-const image = GASToolbox.insertImage(
+const image = Toolbox.insertImage(
   "Reports/2024",
   "Monthly Summary",
   "https://example.com/image.png",
@@ -328,7 +307,7 @@ const image = GASToolbox.insertImage(
 );
 
 // Format paragraph
-GASToolbox.formatParagraph(paragraph, "Arial");
+Toolbox.formatParagraph(paragraph, "Arial");
 ```
 
 ### Sheets Functions
@@ -337,23 +316,23 @@ GASToolbox.formatParagraph(paragraph, "Arial");
 
 ```typescript
 // Get active spreadsheet
-const spreadsheet = GASToolbox.getSpreadsheet();
+const spreadsheet = Toolbox.getSpreadsheet();
 
 // Get spreadsheet by ID or URL
-const spreadsheetById = GASToolbox.getSpreadsheet("spreadsheet-id-123");
-const spreadsheetByUrl = GASToolbox.getSpreadsheet(
+const spreadsheetById = Toolbox.getSpreadsheet("spreadsheet-id-123");
+const spreadsheetByUrl = Toolbox.getSpreadsheet(
   "https://docs.google.com/spreadsheets/d/..."
 );
 
 // Create sheet with header
-const sheet = GASToolbox.createSheet(
+const sheet = Toolbox.createSheet(
   "MySheet",
   ["name", "age", "email"],
   spreadsheet
 );
 
 // Get sheet by name
-const sheet = GASToolbox.getSheet("MySheet", "spreadsheet-id-123");
+const sheet = Toolbox.getSheet("MySheet", "spreadsheet-id-123");
 ```
 
 #### Write Operations
@@ -362,166 +341,166 @@ const sheet = GASToolbox.getSheet("MySheet", "spreadsheet-id-123");
 const header = ["name", "age", "email"];
 
 // Append single object
-GASToolbox.appendObject("MySheet", header, {
+Toolbox.appendObject("MySheet", header, {
   name: "John Doe",
   age: 30,
   email: "john@example.com",
 });
 
 // Append multiple objects
-GASToolbox.appendObjects("MySheet", header, [
+Toolbox.appendObjects("MySheet", header, [
   { name: "Alice", age: 28, email: "alice@example.com" },
   { name: "Bob", age: 35, email: "bob@example.com" },
 ]);
 
 // Update object at row index (0-based, 0 = first data row)
-GASToolbox.updateObject("MySheet", header, 0, {
+Toolbox.updateObject("MySheet", header, 0, {
   name: "John Doe",
   age: 31,
   email: "john@example.com",
 });
 
 // Update multiple objects
-GASToolbox.updateObjects("MySheet", header, [
+Toolbox.updateObjects("MySheet", header, [
   { rowIndex: 0, obj: { name: "John", age: 31, email: "john@example.com" } },
   { rowIndex: 1, obj: { name: "Jane", age: 29, email: "jane@example.com" } },
 ]);
 
 // Delete object at row index
-GASToolbox.deleteObject("MySheet", header, 0);
+Toolbox.deleteObject("MySheet", header, 0);
 
 // Delete multiple objects
-GASToolbox.deleteObjects("MySheet", header, [0, 1, 2]);
+Toolbox.deleteObjects("MySheet", header, [0, 1, 2]);
 
 // Delete objects by filter
-const deleted = GASToolbox.deleteObjectsByFilter(
+const deleted = Toolbox.deleteObjectsByFilter(
   "MySheet",
   header,
   obj => obj.age < 30
 );
 
 // Upsert object (update if exists, insert if new)
-const rowIndex = GASToolbox.upsertObject("MySheet", header, "email", {
+const rowIndex = Toolbox.upsertObject("MySheet", header, "email", {
   email: "john@example.com",
   name: "John Doe",
   age: 31,
 });
 
 // Upsert multiple objects
-const upserted = GASToolbox.upsertObjects("MySheet", header, "email", [
+const upserted = Toolbox.upsertObjects("MySheet", header, "email", [
   { email: "alice@example.com", name: "Alice", age: 28 },
   { email: "bob@example.com", name: "Bob", age: 35 },
 ]);
 
 // Replace all data
-GASToolbox.replaceAll("MySheet", header, [
+Toolbox.replaceAll("MySheet", header, [
   { name: "New User 1", age: 25, email: "user1@example.com" },
   { name: "New User 2", age: 30, email: "user2@example.com" },
 ]);
 
 // Clear all data
-GASToolbox.clearAll("MySheet", header);
+Toolbox.clearAll("MySheet", header);
 ```
 
 #### Read Operations
 
 ```typescript
 // Get all objects
-const allUsers = GASToolbox.getAllObjects("MySheet");
+const allUsers = Toolbox.getAllObjects("MySheet");
 
 // Get object at row index
-const user = GASToolbox.getObject("MySheet", 0);
+const user = Toolbox.getObject("MySheet", 0);
 
 // Get batch of objects
-const batch = GASToolbox.getObjectBatch("MySheet", 0, 10);
+const batch = Toolbox.getObjectBatch("MySheet", 0, 10);
 
 // Get header map
-const headerMap = GASToolbox.getHeaderMap("MySheet");
+const headerMap = Toolbox.getHeaderMap("MySheet");
 
 // Filter objects
-const activeUsers = GASToolbox.filterObjects(
+const activeUsers = Toolbox.filterObjects(
   "MySheet",
   obj => obj.active === true
 );
 
 // Find first matching object
-const user = GASToolbox.findObject(
+const user = Toolbox.findObject(
   "MySheet",
   obj => obj.email === "john@example.com"
 );
 
 // Find index of matching object
-const index = GASToolbox.findObjectIndex(
+const index = Toolbox.findObjectIndex(
   "MySheet",
   obj => obj.email === "john@example.com"
 );
 
 // Count objects
-const count = GASToolbox.countObjects("MySheet");
+const count = Toolbox.countObjects("MySheet");
 
 // Get first object
-const first = GASToolbox.getFirst("MySheet");
+const first = Toolbox.getFirst("MySheet");
 
 // Get last object
-const last = GASToolbox.getLast("MySheet");
+const last = Toolbox.getLast("MySheet");
 
 // Check if object exists
-const exists = GASToolbox.exists(
+const exists = Toolbox.exists(
   "MySheet",
   obj => obj.email === "john@example.com"
 );
 
 // Sort objects
-const sorted = GASToolbox.sortObjects("MySheet", "age", true); // ascending
-const sortedDesc = GASToolbox.sortObjects("MySheet", "age", false); // descending
-const sortedMulti = GASToolbox.sortObjects("MySheet", ["status", "age"], true);
+const sorted = Toolbox.sortObjects("MySheet", "age", true); // ascending
+const sortedDesc = Toolbox.sortObjects("MySheet", "age", false); // descending
+const sortedMulti = Toolbox.sortObjects("MySheet", ["status", "age"], true);
 
 // Get paginated results
-const page = GASToolbox.getObjectsPaginated("MySheet", 1, 10); // page 1, 10 per page
+const page = Toolbox.getObjectsPaginated("MySheet", 1, 10); // page 1, 10 per page
 console.log(
   `Page ${page.page} of ${page.totalPages}, showing ${page.data.length} of ${page.total}`
 );
 
 // Quick filter by column
-const activeUsers = GASToolbox.filterByColumn("MySheet", "status", "active");
+const activeUsers = Toolbox.filterByColumn("MySheet", "status", "active");
 ```
 
 #### Aggregations
 
 ```typescript
 // Sum column values
-const totalRevenue = GASToolbox.sum("Sales", "amount");
+const totalRevenue = Toolbox.sum("Sales", "amount");
 
 // Average column values
-const avgSale = GASToolbox.average("Sales", "amount");
+const avgSale = Toolbox.average("Sales", "amount");
 
 // Min value
-const minSale = GASToolbox.min("Sales", "amount");
+const minSale = Toolbox.min("Sales", "amount");
 
 // Max value
-const maxSale = GASToolbox.max("Sales", "amount");
+const maxSale = Toolbox.max("Sales", "amount");
 
 // Group by column
-const byCategory = GASToolbox.groupBy("Sales", "category");
+const byCategory = Toolbox.groupBy("Sales", "category");
 Object.keys(byCategory).forEach(category => {
   console.log(`${category}: ${byCategory[category].length} items`);
 });
 
 // Get distinct values
-const categories = GASToolbox.getDistinctValues("Sales", "category");
+const categories = Toolbox.getDistinctValues("Sales", "category");
 ```
 
 #### Formatting
 
 ```typescript
 // Trim empty rows and columns
-GASToolbox.trim("MySheet");
+Toolbox.trim("MySheet");
 
 // Trim empty rows only
-GASToolbox.trimRows("MySheet");
+Toolbox.trimRows("MySheet");
 
 // Trim empty columns only
-GASToolbox.trimColumns("MySheet");
+Toolbox.trimColumns("MySheet");
 ```
 
 ## License
