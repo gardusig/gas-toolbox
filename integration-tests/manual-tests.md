@@ -26,7 +26,7 @@ Copy the test functions from `integration-tests/test-functions.js` into your App
 In your Apps Script project:
 
 1. Go to **Extensions** → **Apps Script library**
-2. Add the library with identifier: `GasToolbox`
+2. Add the library with identifier: `GASToolbox`
 3. Use your Script ID from `.clasp.json`
 
 ## Running Tests
@@ -89,7 +89,7 @@ clasp run runAllIntegrationTests
 
 ### Library Not Found
 
-If you get errors about `GasToolbox` not being defined:
+If you get errors about `GASToolbox` not being defined:
 
 1. Ensure the library is added to your Apps Script project
 2. Check that the identifier matches (case-sensitive)
@@ -117,9 +117,9 @@ Run this function to clean up all test data:
 ```javascript
 function cleanupTestData() {
   try {
-    const testFolder = GasToolbox.getFolderByName("TEST");
+    const testFolder = GASToolbox.getFolderByName("TEST");
     if (testFolder) {
-      GasToolbox.deleteFolder(testFolder);
+      GASToolbox.deleteFolder(testFolder);
       console.log("✅ Test data cleaned up");
     }
   } catch (error) {

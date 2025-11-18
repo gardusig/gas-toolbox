@@ -16,13 +16,13 @@ function testDriveFolderOperations() {
 
   try {
     // Test getOrCreateFolderByPath
-    const folder = GasToolbox.getOrCreateFolderByPath(
+    const folder = GASToolbox.getOrCreateFolderByPath(
       "TEST/Integration/Folder1"
     );
     console.log("✅ getOrCreateFolderByPath: PASSED");
 
     // Test getFolderById
-    const folderById = GasToolbox.getFolderById(folder.getId());
+    const folderById = GASToolbox.getFolderById(folder.getId());
     if (folderById && folderById.getId() === folder.getId()) {
       console.log("✅ getFolderById: PASSED");
     } else {
@@ -30,7 +30,7 @@ function testDriveFolderOperations() {
     }
 
     // Test checkFolderExists
-    const exists = GasToolbox.checkFolderExists("TEST/Integration/Folder1");
+    const exists = GASToolbox.checkFolderExists("TEST/Integration/Folder1");
     if (exists) {
       console.log("✅ checkFolderExists: PASSED");
     } else {
@@ -38,7 +38,7 @@ function testDriveFolderOperations() {
     }
 
     // Cleanup
-    GasToolbox.deleteFolder(folder);
+    GASToolbox.deleteFolder(folder);
     console.log("✅ deleteFolder: PASSED");
 
     console.log("✅ All Drive folder tests passed!");
@@ -57,14 +57,14 @@ function testDriveFileOperations() {
 
   try {
     // Create a test folder
-    const folder = GasToolbox.getOrCreateFolderByPath("TEST/Integration");
+    const folder = GASToolbox.getOrCreateFolderByPath("TEST/Integration");
 
     // Create a test document
-    const doc = GasToolbox.createDocument("TEST/Integration", "TestDocument");
+    const doc = GASToolbox.createDocument("TEST/Integration", "TestDocument");
     console.log("✅ createDocument: PASSED");
 
     // Test getFileById
-    const fileById = GasToolbox.getFileById(doc.getId());
+    const fileById = GASToolbox.getFileById(doc.getId());
     if (fileById && fileById.getId() === doc.getId()) {
       console.log("✅ getFileById: PASSED");
     } else {
@@ -72,7 +72,7 @@ function testDriveFileOperations() {
     }
 
     // Test findFile
-    const foundFile = GasToolbox.findFile("TEST/Integration", "TestDocument");
+    const foundFile = GASToolbox.findFile("TEST/Integration", "TestDocument");
     if (foundFile && foundFile.getId() === doc.getId()) {
       console.log("✅ findFile: PASSED");
     } else {
@@ -80,7 +80,7 @@ function testDriveFileOperations() {
     }
 
     // Test checkFileExists
-    const fileExists = GasToolbox.checkFileExists(
+    const fileExists = GASToolbox.checkFileExists(
       "TEST/Integration",
       "TestDocument"
     );
@@ -91,8 +91,8 @@ function testDriveFileOperations() {
     }
 
     // Cleanup
-    GasToolbox.deleteFile(doc);
-    GasToolbox.deleteFolder(folder);
+    GASToolbox.deleteFile(doc);
+    GASToolbox.deleteFolder(folder);
     console.log("✅ deleteFile: PASSED");
 
     console.log("✅ All Drive file tests passed!");
@@ -114,15 +114,15 @@ function testDocsOperations() {
     const fileName = "TestDoc";
 
     // Create document
-    const doc = GasToolbox.createDocument(folderPath, fileName);
+    const doc = GASToolbox.createDocument(folderPath, fileName);
     console.log("✅ createDocument: PASSED");
 
     // Test appendParagraphToFile
-    GasToolbox.appendParagraphToFile(folderPath, fileName, "Hello World!");
+    GASToolbox.appendParagraphToFile(folderPath, fileName, "Hello World!");
     console.log("✅ appendParagraphToFile: PASSED");
 
     // Test getDocumentContent
-    const content = GasToolbox.getDocumentContent(folderPath, fileName);
+    const content = GASToolbox.getDocumentContent(folderPath, fileName);
     if (content && content.includes("Hello World!")) {
       console.log("✅ getDocumentContent: PASSED");
     } else {
@@ -130,7 +130,7 @@ function testDocsOperations() {
     }
 
     // Test getParagraphCount
-    const count = GasToolbox.getParagraphCount(folderPath, fileName);
+    const count = GASToolbox.getParagraphCount(folderPath, fileName);
     if (count > 0) {
       console.log("✅ getParagraphCount: PASSED");
     } else {
@@ -138,17 +138,17 @@ function testDocsOperations() {
     }
 
     // Test appendBulletedListToFile
-    GasToolbox.appendBulletedListToFile(folderPath, fileName, [
+    GASToolbox.appendBulletedListToFile(folderPath, fileName, [
       "Item 1",
       "Item 2",
     ]);
     console.log("✅ appendBulletedListToFile: PASSED");
 
     // Cleanup
-    GasToolbox.deleteFile(doc);
-    const folder = GasToolbox.findFile("TEST/Integration", "");
+    GASToolbox.deleteFile(doc);
+    const folder = GASToolbox.findFile("TEST/Integration", "");
     if (folder) {
-      GasToolbox.deleteFolder(folder);
+      GASToolbox.deleteFolder(folder);
     }
 
     console.log("✅ All Docs tests passed!");
@@ -177,11 +177,11 @@ function testSheetsOperations() {
     const header = ["name", "age", "email"];
 
     // Test createSheet
-    const sheet = GasToolbox.createSheet(sheetName, header, spreadsheet);
+    const sheet = GASToolbox.createSheet(sheetName, header, spreadsheet);
     console.log("✅ createSheet: PASSED");
 
     // Test appendObject
-    GasToolbox.appendObject(sheetName, header, {
+    GASToolbox.appendObject(sheetName, header, {
       name: "Test User",
       age: 30,
       email: "test@example.com",
@@ -189,7 +189,7 @@ function testSheetsOperations() {
     console.log("✅ appendObject: PASSED");
 
     // Test getAllObjects
-    const objects = GasToolbox.getAllObjects(sheetName);
+    const objects = GASToolbox.getAllObjects(sheetName);
     if (objects.length > 0) {
       console.log("✅ getAllObjects: PASSED");
     } else {
@@ -197,7 +197,7 @@ function testSheetsOperations() {
     }
 
     // Test getObject
-    const obj = GasToolbox.getObject(sheetName, 0);
+    const obj = GASToolbox.getObject(sheetName, 0);
     if (obj && obj.name === "Test User") {
       console.log("✅ getObject: PASSED");
     } else {
@@ -205,7 +205,7 @@ function testSheetsOperations() {
     }
 
     // Test countObjects
-    const count = GasToolbox.countObjects(sheetName);
+    const count = GASToolbox.countObjects(sheetName);
     if (count === 1) {
       console.log("✅ countObjects: PASSED");
     } else {
