@@ -125,9 +125,98 @@ A comprehensive Google Apps Script library providing utilities for Drive, Docs, 
 
 ## Usage Examples
 
-### Drive Functions
+### Complete Working Example
 
-#### Folders
+Here's a complete example you can copy and run that demonstrates the library's main features:
+
+```typescript
+function example() {
+  // 1. Create a folder (creates nested structure automatically)
+  const folder = Toolbox.getOrCreateFolderByPath("MyProjects/2024/Reports");
+  console.log("✅ Folder created:", folder.getName());
+
+  // 2. Create a Google Doc
+  const doc = Toolbox.createDocument("MyProjects/2024/Reports", "My Report");
+  console.log("✅ Document created:", doc.getName());
+
+  // 3. Add content to the document
+  Toolbox.appendParagraphToFile(
+    "MyProjects/2024/Reports",
+    "My Report",
+    "Monthly Report",
+    DocumentApp.ParagraphHeading.HEADING1
+  );
+
+  Toolbox.appendParagraphToFile(
+    "MyProjects/2024/Reports",
+    "My Report",
+    "This is a sample report created with Toolbox."
+  );
+
+  Toolbox.appendBulletedListToFile("MyProjects/2024/Reports", "My Report", [
+    "Item 1: First task completed",
+    "Item 2: Second task in progress",
+    "Item 3: Third task planned"
+  ]);
+
+  // Get and print document content
+  const content = Toolbox.getDocumentContent("MyProjects/2024/Reports", "My Report");
+  console.log("📄 Document content:\n", content);
+
+  // 4. Create a Google Sheet
+  // Note: This requires an active spreadsheet (open a Google Sheet in your browser)
+  // or use: const spreadsheet = Toolbox.getSpreadsheet("your-spreadsheet-id");
+  const spreadsheet = Toolbox.getSpreadsheet();
+  if (!spreadsheet) {
+    console.log("⚠️ No active spreadsheet. Open a Google Sheet and try again.");
+    return;
+  }
+  const header = ["name", "age", "email", "status"];
+  const sheet = Toolbox.createSheet("Employees", header, spreadsheet);
+  console.log("✅ Sheet created:", sheet.getName());
+
+  // 5. Add data to the sheet
+  Toolbox.appendObject("Employees", header, {
+    name: "John Doe",
+    age: 30,
+    email: "john@example.com",
+    status: "active"
+  });
+
+  Toolbox.appendObjects("Employees", header, [
+    { name: "Alice Smith", age: 28, email: "alice@example.com", status: "active" },
+    { name: "Bob Johnson", age: 35, email: "bob@example.com", status: "inactive" },
+    { name: "Carol Brown", age: 32, email: "carol@example.com", status: "active" }
+  ]);
+
+  // 6. Read and print data from the sheet
+  const allEmployees = Toolbox.getAllObjects("Employees");
+  console.log("👥 All employees:", JSON.stringify(allEmployees, null, 2));
+
+  const activeEmployees = Toolbox.filterObjects(
+    "Employees",
+    emp => emp.status === "active"
+  );
+  console.log("✅ Active employees:", activeEmployees.length);
+
+  const totalEmployees = Toolbox.countObjects("Employees");
+  console.log("📊 Total employees:", totalEmployees);
+
+  // Print summary
+  console.log("\n📋 Summary:");
+  console.log("- Folder:", folder.getName());
+  console.log("- Document:", doc.getName());
+  console.log("- Sheet:", sheet.getName());
+  console.log("- Total employees:", totalEmployees);
+  console.log("- Active employees:", activeEmployees.length);
+}
+```
+
+### Detailed API Reference
+
+#### Drive Functions
+
+##### Folders
 
 ```typescript
 // Create or get folder by path (creates nested structure automatically)
@@ -161,9 +250,12 @@ if (targetFolder) {
 }
 ```
 
-#### Files
+##### Files
 
 ```typescript
+// First, get or create a folder
+const folder = Toolbox.getOrCreateFolderByPath("Projects/2024");
+
 // Find file by name in a folder
 const file = Toolbox.getFileByName("Report.docx", folder);
 
@@ -195,9 +287,9 @@ Toolbox.renameFile(file, "NewName.docx");
 Toolbox.deleteFile(file);
 ```
 
-### Docs Functions
+#### Docs Functions
 
-#### Document Management
+##### Document Management
 
 ```typescript
 // Create document (creates folders automatically)
@@ -216,7 +308,7 @@ Toolbox.clearDocument("Reports/2024", "Monthly Summary");
 const folder = Toolbox.ensureFolder("Projects/2024/Q1");
 ```
 
-#### Paragraphs
+##### Paragraphs
 
 ```typescript
 // Append paragraph
@@ -256,7 +348,7 @@ const count = Toolbox.getParagraphCount("Reports/2024", "Monthly Summary");
 Toolbox.deleteParagraph("Reports/2024", "Monthly Summary", 0);
 ```
 
-#### Lists
+##### Lists
 
 ```typescript
 // Append bulleted list
@@ -274,7 +366,7 @@ Toolbox.appendNumberedListToFile("Reports/2024", "Monthly Summary", [
 ]);
 ```
 
-#### Text & Elements
+##### Text & Elements
 
 ```typescript
 // Replace text (regex-compatible)
@@ -310,9 +402,9 @@ const image = Toolbox.insertImage(
 Toolbox.formatParagraph(paragraph, "Arial");
 ```
 
-### Sheets Functions
+#### Sheets Functions
 
-#### Spreadsheet Utilities
+##### Spreadsheet Utilities
 
 ```typescript
 // Get active spreadsheet
@@ -335,7 +427,7 @@ const sheet = Toolbox.createSheet(
 const sheet = Toolbox.getSheet("MySheet", "spreadsheet-id-123");
 ```
 
-#### Write Operations
+##### Write Operations
 
 ```typescript
 const header = ["name", "age", "email"];
@@ -402,7 +494,7 @@ Toolbox.replaceAll("MySheet", header, [
 Toolbox.clearAll("MySheet", header);
 ```
 
-#### Read Operations
+##### Read Operations
 
 ```typescript
 // Get all objects
@@ -465,7 +557,7 @@ console.log(
 const activeUsers = Toolbox.filterByColumn("MySheet", "status", "active");
 ```
 
-#### Aggregations
+##### Aggregations
 
 ```typescript
 // Sum column values
@@ -490,7 +582,7 @@ Object.keys(byCategory).forEach(category => {
 const categories = Toolbox.getDistinctValues("Sales", "category");
 ```
 
-#### Formatting
+##### Formatting
 
 ```typescript
 // Trim empty rows and columns
