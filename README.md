@@ -125,57 +125,158 @@ A comprehensive Google Apps Script library providing utilities for Drive, Docs, 
 
 ## Usage Examples
 
-### Complete Working Example
+### 1. Folders & Files Examples
 
-Here's a complete example you can copy and run that demonstrates the library's main features:
+Working with Google Drive folders and files:
 
 ```typescript
-function example() {
-  // 1. Create a folder (creates nested structure automatically)
+function foldersAndFilesExample() {
+  // Create a folder (creates nested structure automatically)
   const folder = Toolbox.getOrCreateFolderByPath("MyProjects/2024/Reports");
   console.log("✅ Folder created:", folder.getName());
 
-  // 2. Create a Google Doc
-  const doc = Toolbox.createDocument("MyProjects/2024/Reports", "My Report");
+  // Get folder by name (searches from root)
+  const folderByName = Toolbox.getFolderByName("MyProjects");
+  
+  // Create a subfolder
+  const subFolder = Toolbox.createFolder("Archive", folder);
+  
+  // Get all files in a folder
+  const files = Toolbox.getAllFilesInFolder(folder);
+  console.log("📁 Files in folder:", files.length);
+
+  // Find a file by name
+  const file = Toolbox.getFileByName("Report.docx", folder);
+  
+  // Find file by path
+  const fileByPath = Toolbox.findFile("MyProjects/2024/Reports", "Report.docx");
+  
+  // Get files by type (e.g., PDFs)
+  const pdfFiles = Toolbox.getFilesByType("application/pdf", folder);
+  
+  // Check if file exists
+  const fileExists = Toolbox.checkFileExists("MyProjects/2024/Reports", "Report.docx");
+  
+  // Copy a file
+  if (file) {
+    const copiedFile = Toolbox.copyFile(file, folder, "Copy of Report.docx");
+    console.log("📋 File copied:", copiedFile.getName());
+  }
+  
+  // Move a file to another folder
+  if (file && subFolder) {
+    Toolbox.moveFile(file, subFolder);
+  }
+  
+  // Rename a file
+  if (file) {
+    Toolbox.renameFile(file, "Renamed Report.docx");
+  }
+  
+  // Delete a file
+  if (file) {
+    Toolbox.deleteFile(file);
+  }
+}
+```
+
+### 2. Docs Examples
+
+Creating and manipulating Google Documents:
+
+```typescript
+function docsExample() {
+  // Create a document (creates folders automatically)
+  const doc = Toolbox.createDocument("MyProjects/2024/Reports", "Monthly Report");
   console.log("✅ Document created:", doc.getName());
 
-  // 3. Add content to the document
+  // Add a heading
   Toolbox.appendParagraphToFile(
     "MyProjects/2024/Reports",
-    "My Report",
+    "Monthly Report",
     "Monthly Report",
     DocumentApp.ParagraphHeading.HEADING1
   );
 
+  // Add a paragraph
   Toolbox.appendParagraphToFile(
     "MyProjects/2024/Reports",
-    "My Report",
+    "Monthly Report",
     "This is a sample report created with Toolbox."
   );
 
-  Toolbox.appendBulletedListToFile("MyProjects/2024/Reports", "My Report", [
+  // Add a bulleted list
+  Toolbox.appendBulletedListToFile("MyProjects/2024/Reports", "Monthly Report", [
     "Item 1: First task completed",
     "Item 2: Second task in progress",
     "Item 3: Third task planned"
   ]);
 
-  // Get and print document content
-  const content = Toolbox.getDocumentContent("MyProjects/2024/Reports", "My Report");
+  // Add a numbered list
+  Toolbox.appendNumberedListToFile("MyProjects/2024/Reports", "Monthly Report", [
+    "First priority",
+    "Second priority",
+    "Third priority"
+  ]);
+
+  // Insert paragraph at specific position
+  Toolbox.insertParagraphAtPosition(
+    "MyProjects/2024/Reports",
+    "Monthly Report",
+    1,
+    "Introduction paragraph"
+  );
+
+  // Get document content
+  const content = Toolbox.getDocumentContent("MyProjects/2024/Reports", "Monthly Report");
   console.log("📄 Document content:\n", content);
 
-  // 4. Create a Google Sheet
-  // Note: This requires an active spreadsheet (open a Google Sheet in your browser)
-  // or use: const spreadsheet = Toolbox.getSpreadsheet("your-spreadsheet-id");
+  // Get paragraph count
+  const paragraphCount = Toolbox.getParagraphCount("MyProjects/2024/Reports", "Monthly Report");
+  console.log("📊 Paragraph count:", paragraphCount);
+
+  // Replace text in document
+  const replacedCount = Toolbox.replaceTextInFile(
+    "MyProjects/2024/Reports",
+    "Monthly Report",
+    "Task",
+    "Action Item"
+  );
+  console.log("🔄 Text replaced:", replacedCount, "times");
+
+  // Get a specific paragraph
+  const paragraph = Toolbox.getParagraphAtPosition(
+    "MyProjects/2024/Reports",
+    "Monthly Report",
+    0
+  );
+  
+  // Format paragraph
+  if (paragraph) {
+    Toolbox.formatParagraph(paragraph, "Arial"); // font family
+  }
+}
+```
+
+### 3. Sheets Examples
+
+Working with Google Sheets data:
+
+```typescript
+function sheetsExample() {
+  // Get active spreadsheet (or use: Toolbox.getSpreadsheet("spreadsheet-id"))
   const spreadsheet = Toolbox.getSpreadsheet();
   if (!spreadsheet) {
     console.log("⚠️ No active spreadsheet. Open a Google Sheet and try again.");
     return;
   }
+
+  // Create a sheet with header
   const header = ["name", "age", "email", "status"];
   const sheet = Toolbox.createSheet("Employees", header, spreadsheet);
   console.log("✅ Sheet created:", sheet.getName());
 
-  // 5. Add data to the sheet
+  // Add a single employee
   Toolbox.appendObject("Employees", header, {
     name: "John Doe",
     age: 30,
@@ -183,36 +284,66 @@ function example() {
     status: "active"
   });
 
+  // Add multiple employees
   Toolbox.appendObjects("Employees", header, [
     { name: "Alice Smith", age: 28, email: "alice@example.com", status: "active" },
     { name: "Bob Johnson", age: 35, email: "bob@example.com", status: "inactive" },
     { name: "Carol Brown", age: 32, email: "carol@example.com", status: "active" }
   ]);
 
-  // 6. Read and print data from the sheet
+  // Read all data
   const allEmployees = Toolbox.getAllObjects("Employees");
   console.log("👥 All employees:", JSON.stringify(allEmployees, null, 2));
 
+  // Filter data
   const activeEmployees = Toolbox.filterObjects(
     "Employees",
     emp => emp.status === "active"
   );
   console.log("✅ Active employees:", activeEmployees.length);
 
+  // Count records
   const totalEmployees = Toolbox.countObjects("Employees");
   console.log("📊 Total employees:", totalEmployees);
 
-  // Print summary
-  console.log("\n📋 Summary:");
-  console.log("- Folder:", folder.getName());
-  console.log("- Document:", doc.getName());
-  console.log("- Sheet:", sheet.getName());
-  console.log("- Total employees:", totalEmployees);
-  console.log("- Active employees:", activeEmployees.length);
+  // Find a specific employee
+  const employee = Toolbox.findObject(
+    "Employees",
+    emp => emp.email === "john@example.com"
+  );
+  console.log("🔍 Found employee:", employee);
+
+  // Update an employee
+  if (employee) {
+    const index = Toolbox.findObjectIndex("Employees", emp => emp.email === "john@example.com");
+    if (index !== -1) {
+      Toolbox.updateObject("Employees", header, index, {
+        name: "John Doe",
+        age: 31, // Updated age
+        email: "john@example.com",
+        status: "active"
+      });
+    }
+  }
+
+  // Aggregate data
+  const averageAge = Toolbox.average("Employees", "age");
+  console.log("📈 Average age:", averageAge);
+
+  const maxAge = Toolbox.max("Employees", "age");
+  console.log("📈 Max age:", maxAge);
+
+  // Group by status
+  const byStatus = Toolbox.groupBy("Employees", "status");
+  console.log("📊 Employees by status:", byStatus);
+
+  // Get distinct values
+  const statuses = Toolbox.getDistinctValues("Employees", "status");
+  console.log("📋 Unique statuses:", statuses);
 }
 ```
 
-### Detailed API Reference
+### Complete API Reference
 
 #### Drive Functions
 
