@@ -155,8 +155,13 @@ function foldersAndFilesExample() {
   // Find file by path
   const fileByPath = Toolbox.findFile("MyProjects/2024/Reports", "My Report");
   
-  // Get files by type (e.g., PDFs)
-  const pdfFiles = Toolbox.getFilesByType("application/pdf", folder);
+  // Get files by type (e.g., PDFs) - safe to use even if none exist
+  try {
+    const pdfFiles = Toolbox.getFilesByType(folder, "application/pdf");
+    console.log("📄 PDF files found:", pdfFiles.length);
+  } catch (error) {
+    console.log("ℹ️ No PDF files or error:", error.message);
+  }
   
   // Check if file exists
   const fileExists = Toolbox.checkFileExists("MyProjects/2024/Reports", "My Report");
@@ -407,7 +412,7 @@ const fileByPath = Toolbox.findFile("Projects/2024", "My Report");
 const fileById = Toolbox.getFileById("file-id-123");
 
 // Get files by type (MIME type)
-const pdfFiles = Toolbox.getFilesByType("application/pdf", folder);
+const pdfFiles = Toolbox.getFilesByType(folder, "application/pdf");
 
 // Get all files in a folder
 const files = Toolbox.getAllFilesInFolder(folder);
