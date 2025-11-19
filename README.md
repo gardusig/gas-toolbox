@@ -292,87 +292,98 @@ Working with Google Sheets data:
 function sheetsExample() {
   // Get active spreadsheet, or create a new one if none exists
   let spreadsheet = Toolbox.getSpreadsheet();
+  let spreadsheetId: string | undefined;
+  
   if (!spreadsheet) {
     // Create a new spreadsheet if none is active
     spreadsheet = SpreadsheetApp.create("My Spreadsheet");
+    spreadsheetId = spreadsheet.getId();
     console.log("✅ Created new spreadsheet:", spreadsheet.getName());
-    console.log("📋 Spreadsheet ID:", spreadsheet.getId());
+    console.log("📋 Spreadsheet ID:", spreadsheetId);
   } else {
+    spreadsheetId = spreadsheet.getId();
     console.log("✅ Using active spreadsheet:", spreadsheet.getName());
   }
   
   // Alternative: Use a specific spreadsheet by ID
   // const spreadsheet = Toolbox.getSpreadsheet("your-spreadsheet-id-here");
+  // const spreadsheetId = "your-spreadsheet-id-here";
 
   // Create a sheet with header
   const header = ["name", "age", "email", "status"];
   const sheet = Toolbox.createSheet("Employees", header, spreadsheet);
   console.log("✅ Sheet created:", sheet.getName());
 
-  // Add a single employee
+  // Add a single employee (pass spreadsheet ID for created spreadsheets)
   Toolbox.appendObject("Employees", header, {
     name: "John Doe",
     age: 30,
     email: "john@example.com",
     status: "active"
-  });
+  }, spreadsheetId);
 
   // Add multiple employees
   Toolbox.appendObjects("Employees", header, [
     { name: "Alice Smith", age: 28, email: "alice@example.com", status: "active" },
     { name: "Bob Johnson", age: 35, email: "bob@example.com", status: "inactive" },
     { name: "Carol Brown", age: 32, email: "carol@example.com", status: "active" }
-  ]);
+  ], spreadsheetId);
 
   // Read all data
-  const allEmployees = Toolbox.getAllObjects("Employees");
+  const allEmployees = Toolbox.getAllObjects("Employees", spreadsheetId);
   console.log("👥 All employees:", JSON.stringify(allEmployees, null, 2));
 
   // Filter data
   const activeEmployees = Toolbox.filterObjects(
     "Employees",
-    emp => emp.status === "active"
+    emp => emp.status === "active",
+    spreadsheetId
   );
   console.log("✅ Active employees:", activeEmployees.length);
 
   // Count records
-  const totalEmployees = Toolbox.countObjects("Employees");
+  const totalEmployees = Toolbox.countObjects("Employees", spreadsheetId);
   console.log("📊 Total employees:", totalEmployees);
 
   // Find a specific employee
   const employee = Toolbox.findObject(
     "Employees",
-    emp => emp.email === "john@example.com"
+    emp => emp.email === "john@example.com",
+    spreadsheetId
   );
   console.log("🔍 Found employee:", employee);
 
   // Update an employee (find index first, then update)
   if (employee) {
-    const index = Toolbox.findObjectIndex("Employees", emp => emp.email === "john@example.com");
+    const index = Toolbox.findObjectIndex(
+      "Employees", 
+      emp => emp.email === "john@example.com",
+      spreadsheetId
+    );
     if (index !== -1) {
       Toolbox.updateObject("Employees", header, index, {
         name: "John Doe",
         age: 31, // Updated age
         email: "john@example.com",
         status: "active"
-      });
+      }, spreadsheetId);
       console.log("✅ Employee updated at index", index);
     }
   }
 
   // Aggregate data
-  const averageAge = Toolbox.average("Employees", "age");
+  const averageAge = Toolbox.average("Employees", "age", spreadsheetId);
   console.log("📈 Average age:", averageAge);
 
-  const maxAge = Toolbox.max("Employees", "age");
+  const maxAge = Toolbox.max("Employees", "age", spreadsheetId);
   console.log("📈 Max age:", maxAge);
 
   // Group by status
-  const byStatus = Toolbox.groupBy("Employees", "status");
+  const byStatus = Toolbox.groupBy("Employees", "status", spreadsheetId);
   console.log("📊 Employees by status:", byStatus);
 
   // Get distinct values
-  const statuses = Toolbox.getDistinctValues("Employees", "status");
+  const statuses = Toolbox.getDistinctValues("Employees", "status", spreadsheetId);
   console.log("📋 Unique statuses:", statuses);
 
   // Print summary
