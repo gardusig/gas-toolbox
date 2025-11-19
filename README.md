@@ -292,7 +292,7 @@ Working with Google Sheets data:
 function sheetsExample() {
   // Get active spreadsheet, or create a new one if none exists
   let spreadsheet = Toolbox.getSpreadsheet();
-  let spreadsheetId: string | undefined;
+  let spreadsheetId;
   
   if (!spreadsheet) {
     // Create a new spreadsheet if none is active
