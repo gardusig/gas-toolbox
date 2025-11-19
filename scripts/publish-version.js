@@ -4,9 +4,11 @@
  * Publishes a new version of the library:
  * 1. Gets the latest version number (if not specified)
  * 2. Uses specified version or increments latest
- * 3. Builds the project
- * 4. Deploys to Apps Script
- * 5. Creates a new version
+ * 3. Runs tests with coverage
+ * 4. Builds the project
+ * 5. Deploys to Apps Script
+ * 6. Creates a new version
+ * 7. Updates badges (coverage, version, etc.)
  *
  * Usage:
  *   npm run publish              # Publishes next incremental version
@@ -45,6 +47,11 @@ function getLatestVersion() {
   }
 }
 
+function runTestsWithCoverage() {
+  console.log("🧪 Running tests with coverage...");
+  execSync("npm run test:coverage", { stdio: "inherit" });
+}
+
 function build() {
   console.log("📦 Building project...");
   execSync("npm run build", { stdio: "inherit" });
@@ -59,6 +66,11 @@ function createVersion(versionNumber, description) {
   console.log(`📌 Creating version ${versionNumber}...`);
   const versionDescription = description || `Version ${versionNumber}`;
   execSync(`clasp version "${versionDescription}"`, { stdio: "inherit" });
+}
+
+function updateBadges() {
+  console.log("🏷️  Updating badges...");
+  execSync("node scripts/update-badges.js", { stdio: "inherit" });
 }
 
 // Main execution
@@ -96,9 +108,11 @@ if (targetVersion !== null) {
   console.log(`\n📋 Current latest version: ${latestVersion}`);
   console.log(`✨ Publishing specified version: ${targetVersion}\n`);
 
+  runTestsWithCoverage();
   build();
   deploy();
   createVersion(targetVersion, customDescription || `Version ${targetVersion}`);
+  updateBadges();
 
   console.log(`\n✅ Successfully published version ${targetVersion}!`);
 } else {
@@ -108,9 +122,11 @@ if (targetVersion !== null) {
   console.log(`\n📋 Current latest version: ${latestVersion}`);
   console.log(`✨ Next version will be: ${nextVersion}\n`);
 
+  runTestsWithCoverage();
   build();
   deploy();
   createVersion(nextVersion, customDescription || `Version ${nextVersion}`);
+  updateBadges();
 
   console.log(`\n✅ Successfully published version ${nextVersion}!`);
 }
