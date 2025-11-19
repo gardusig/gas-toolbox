@@ -138,7 +138,7 @@ export function createMockDocument(
     getNumChildren: jest.fn(() => paragraphs.length),
     getChild: jest.fn((index: number) => {
       const child = paragraphs[index];
-      if (child && typeof child.getParent !== 'function') {
+      if (child && typeof child.getParent !== "function") {
         child.getParent = jest.fn(() => body);
       }
       return child;
@@ -159,7 +159,7 @@ export function createMockDocument(
   };
 
   mockDoc.getBody = jest.fn(() => body);
-  
+
   return mockDoc;
 }
 
