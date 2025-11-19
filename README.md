@@ -290,12 +290,19 @@ Working with Google Sheets data:
 
 ```typescript
 function sheetsExample() {
-  // Get active spreadsheet (or use: Toolbox.getSpreadsheet("spreadsheet-id"))
-  const spreadsheet = Toolbox.getSpreadsheet();
+  // Get active spreadsheet, or create a new one if none exists
+  let spreadsheet = Toolbox.getSpreadsheet();
   if (!spreadsheet) {
-    console.log("⚠️ No active spreadsheet. Open a Google Sheet and try again.");
-    return;
+    // Create a new spreadsheet if none is active
+    spreadsheet = SpreadsheetApp.create("My Spreadsheet");
+    console.log("✅ Created new spreadsheet:", spreadsheet.getName());
+    console.log("📋 Spreadsheet ID:", spreadsheet.getId());
+  } else {
+    console.log("✅ Using active spreadsheet:", spreadsheet.getName());
   }
+  
+  // Alternative: Use a specific spreadsheet by ID
+  // const spreadsheet = Toolbox.getSpreadsheet("your-spreadsheet-id-here");
 
   // Create a sheet with header
   const header = ["name", "age", "email", "status"];
