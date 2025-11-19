@@ -1,11 +1,11 @@
-name: Update Coverage Badge
+name: Update Badges
 
 on:
   workflow_dispatch:
 
 jobs:
-  update-badge:
-    name: Update Coverage Badge
+  update-badges:
+    name: Update Badges
     runs-on: ubuntu-latest
     permissions:
       contents: write

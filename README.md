@@ -1,6 +1,10 @@
 # GAS Toolbox
 
-[![Coverage](https://img.shields.io/badge/coverage-99.59%25-green.svg)](https://github.com/gardusig/gas-toolbox)
+[![Coverage](https://img.shields.io/badge/coverage-100.00%25-green.svg)](https://github.com/gardusig/gas-toolbox)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](package.json)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0.0-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 
 A comprehensive Google Apps Script library providing utilities for Drive, Docs, and Sheets.
 
