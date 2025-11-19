@@ -136,7 +136,7 @@ Working with Google Drive folders and files:
 ```typescript
 function foldersAndFilesExample() {
   // Create a folder (creates nested structure automatically)
-  const folder = Toolbox.getOrCreateFolderByPath("MyProjects/2024/Reports");
+  const folder = Toolbox.getOrCreateFolderByPath("MyProjects/2025/Reports");
   console.log("✅ Folder created:", folder.getName());
 
   // Get folder by name (searches from root)
@@ -146,7 +146,7 @@ function foldersAndFilesExample() {
   const subFolder = Toolbox.createFolder("Archive", folder);
   
   // Create a document to work with (Google Docs files don't have .docx extension)
-  const doc = Toolbox.createDocument("MyProjects/2024/Reports", "My Report");
+  const doc = Toolbox.createDocument("MyProjects/2025/Reports", "My Report");
   console.log("✅ Document created:", doc.getName());
 
   // Get all files in a folder
@@ -157,7 +157,7 @@ function foldersAndFilesExample() {
   const file = Toolbox.getFileByName("My Report", folder);
   
   // Find file by path
-  const fileByPath = Toolbox.findFile("MyProjects/2024/Reports", "My Report");
+  const fileByPath = Toolbox.findFile("MyProjects/2025/Reports", "My Report");
   
   // Get files by type (e.g., PDFs) - safe to use even if none exist
   try {
@@ -168,7 +168,7 @@ function foldersAndFilesExample() {
   }
   
   // Check if file exists
-  const fileExists = Toolbox.checkFileExists("MyProjects/2024/Reports", "My Report");
+  const fileExists = Toolbox.checkFileExists("MyProjects/2025/Reports", "My Report");
   console.log("📋 File exists:", fileExists);
   
   // Copy a file
@@ -203,12 +203,12 @@ Creating and manipulating Google Documents:
 ```typescript
 function docsExample() {
   // Create a document (creates folders automatically)
-  const doc = Toolbox.createDocument("MyProjects/2024/Reports", "Monthly Report");
+  const doc = Toolbox.createDocument("MyProjects/2025/Reports", "Monthly Report");
   console.log("✅ Document created:", doc.getName());
 
   // Add a heading
   Toolbox.appendParagraphToFile(
-    "MyProjects/2024/Reports",
+    "MyProjects/2025/Reports",
     "Monthly Report",
     "Monthly Report",
     DocumentApp.ParagraphHeading.HEADING1
@@ -216,20 +216,20 @@ function docsExample() {
 
   // Add a paragraph
   Toolbox.appendParagraphToFile(
-    "MyProjects/2024/Reports",
+    "MyProjects/2025/Reports",
     "Monthly Report",
     "This is a sample report created with Toolbox."
   );
 
   // Add a bulleted list
-  Toolbox.appendBulletedListToFile("MyProjects/2024/Reports", "Monthly Report", [
+  Toolbox.appendBulletedListToFile("MyProjects/2025/Reports", "Monthly Report", [
     "Item 1: First task completed",
     "Item 2: Second task in progress",
     "Item 3: Third task planned"
   ]);
 
   // Add a numbered list
-  Toolbox.appendNumberedListToFile("MyProjects/2024/Reports", "Monthly Report", [
+  Toolbox.appendNumberedListToFile("MyProjects/2025/Reports", "Monthly Report", [
     "First priority",
     "Second priority",
     "Third priority"
@@ -237,30 +237,30 @@ function docsExample() {
 
   // Add more content with text we'll replace later
   Toolbox.appendParagraphToFile(
-    "MyProjects/2024/Reports",
+    "MyProjects/2025/Reports",
     "Monthly Report",
     "Task: Review quarterly results"
   );
 
   // Insert paragraph at specific position
   Toolbox.insertParagraphAtPosition(
-    "MyProjects/2024/Reports",
+    "MyProjects/2025/Reports",
     "Monthly Report",
     "Introduction paragraph",
     1  // position (0-based index)
   );
 
   // Get document content
-  const content = Toolbox.getDocumentContent("MyProjects/2024/Reports", "Monthly Report");
+  const content = Toolbox.getDocumentContent("MyProjects/2025/Reports", "Monthly Report");
   console.log("📄 Document content:\n", content);
 
   // Get paragraph count
-  const paragraphCount = Toolbox.getParagraphCount("MyProjects/2024/Reports", "Monthly Report");
+  const paragraphCount = Toolbox.getParagraphCount("MyProjects/2025/Reports", "Monthly Report");
   console.log("📊 Paragraph count:", paragraphCount);
 
   // Replace text in document (regex-compatible)
   const replacedCount = Toolbox.replaceTextInFile(
-    "MyProjects/2024/Reports",
+    "MyProjects/2025/Reports",
     "Monthly Report",
     "Task",
     "Action Item"
@@ -269,7 +269,7 @@ function docsExample() {
 
   // Get a specific paragraph
   const paragraph = Toolbox.getParagraphAtPosition(
-    "MyProjects/2024/Reports",
+    "MyProjects/2025/Reports",
     "Monthly Report",
     0
   );
@@ -407,7 +407,7 @@ function sheetsExample() {
 
 ```typescript
 // Create or get folder by path (creates nested structure automatically)
-const folder = Toolbox.getOrCreateFolderByPath("Projects/2024/January");
+const folder = Toolbox.getOrCreateFolderByPath("Projects/2025/January");
 
 // Get folder by ID
 const folderById = Toolbox.getFolderById("folder-id-123");
@@ -422,7 +422,7 @@ const newFolder = Toolbox.createFolder("NewFolder", folder);
 const folders = Toolbox.getAllFoldersInFolder(folder);
 
 // Check if folder exists
-const exists = Toolbox.checkFolderExists("Projects/2024");
+const exists = Toolbox.checkFolderExists("Projects/2025");
 
 // Delete folder
 Toolbox.deleteFolder(folder);
@@ -441,16 +441,16 @@ if (targetFolder) {
 
 ```typescript
 // First, get or create a folder
-const folder = Toolbox.getOrCreateFolderByPath("Projects/2024");
+const folder = Toolbox.getOrCreateFolderByPath("Projects/2025");
 
 // Create a document first (Google Docs files don't have .docx extension)
-const doc = Toolbox.createDocument("Projects/2024", "My Report");
+const doc = Toolbox.createDocument("Projects/2025", "My Report");
 
 // Find file by name in a folder (no extension needed for Google Docs)
 const file = Toolbox.getFileByName("My Report", folder);
 
 // Find file by path (throws error if not found)
-const fileByPath = Toolbox.findFile("Projects/2024", "My Report");
+const fileByPath = Toolbox.findFile("Projects/2025", "My Report");
 
 // Get file by ID
 const fileById = Toolbox.getFileById("file-id-123");
@@ -462,7 +462,7 @@ const pdfFiles = Toolbox.getFilesByType(folder, "application/pdf");
 const files = Toolbox.getAllFilesInFolder(folder);
 
 // Check if file exists
-const fileExists = Toolbox.checkFileExists("Projects/2024", "My Report");
+const fileExists = Toolbox.checkFileExists("Projects/2025", "My Report");
 
 // Copy file
 const copiedFile = Toolbox.copyFile(file, folder, "Copy of My Report");
@@ -483,19 +483,19 @@ Toolbox.deleteFile(file);
 
 ```typescript
 // Create document (creates folders automatically)
-const doc = Toolbox.createDocument("Reports/2024", "Monthly Summary");
+const doc = Toolbox.createDocument("Reports/2025", "Monthly Summary");
 
 // Get document content as text
 const content = Toolbox.getDocumentContent(
-  "Reports/2024",
+  "Reports/2025",
   "Monthly Summary"
 );
 
 // Clear all document content
-Toolbox.clearDocument("Reports/2024", "Monthly Summary");
+Toolbox.clearDocument("Reports/2025", "Monthly Summary");
 
 // Ensure folder exists
-const folder = Toolbox.ensureFolder("Projects/2024/Q1");
+const folder = Toolbox.ensureFolder("Projects/2025/Q1");
 ```
 
 ##### Paragraphs
@@ -503,14 +503,14 @@ const folder = Toolbox.ensureFolder("Projects/2024/Q1");
 ```typescript
 // Append paragraph
 Toolbox.appendParagraphToFile(
-  "Reports/2024",
+  "Reports/2025",
   "Monthly Summary",
   "Hello World!"
 );
 
 // Append paragraph with heading
 Toolbox.appendParagraphToFile(
-  "Reports/2024",
+  "Reports/2025",
   "Monthly Summary",
   "Title",
   DocumentApp.ParagraphHeading.HEADING1
@@ -518,7 +518,7 @@ Toolbox.appendParagraphToFile(
 
 // Insert paragraph at position
 Toolbox.insertParagraphAtPosition(
-  "Reports/2024",
+  "Reports/2025",
   "Monthly Summary",
   "First paragraph",
   0  // position (0-based index)
@@ -526,30 +526,30 @@ Toolbox.insertParagraphAtPosition(
 
 // Get paragraph at position
 const paragraph = Toolbox.getParagraphAtPosition(
-  "Reports/2024",
+  "Reports/2025",
   "Monthly Summary",
   0
 );
 
 // Get paragraph count
-const count = Toolbox.getParagraphCount("Reports/2024", "Monthly Summary");
+const count = Toolbox.getParagraphCount("Reports/2025", "Monthly Summary");
 
 // Delete paragraph at position
-Toolbox.deleteParagraph("Reports/2024", "Monthly Summary", 0);
+Toolbox.deleteParagraph("Reports/2025", "Monthly Summary", 0);
 ```
 
 ##### Lists
 
 ```typescript
 // Append bulleted list
-Toolbox.appendBulletedListToFile("Reports/2024", "Monthly Summary", [
+Toolbox.appendBulletedListToFile("Reports/2025", "Monthly Summary", [
   "Item 1",
   "Item 2",
   "Item 3",
 ]);
 
 // Append numbered list
-Toolbox.appendNumberedListToFile("Reports/2024", "Monthly Summary", [
+Toolbox.appendNumberedListToFile("Reports/2025", "Monthly Summary", [
   "First",
   "Second",
   "Third",
@@ -569,7 +569,7 @@ const count = Toolbox.replaceTextInFile(
 
 // Insert table
 const table = Toolbox.insertTable(
-  "Reports/2024",
+  "Reports/2025",
   "Monthly Summary",
   [
     ["Name", "Age", "Email"],
@@ -581,7 +581,7 @@ const table = Toolbox.insertTable(
 
 // Insert image
 const image = Toolbox.insertImage(
-  "Reports/2024",
+  "Reports/2025",
   "Monthly Summary",
   "https://example.com/image.png",
   300,
@@ -784,7 +784,3 @@ Toolbox.trimRows("MySheet");
 // Trim empty columns only
 Toolbox.trimColumns("MySheet");
 ```
-
-## License
-
-MIT License - Copyright (c) 2024 Gustavo Gardusi

@@ -33,7 +33,7 @@ describe("Docs Module", () => {
       const rootFolder = createMockFolder("root");
       (global.DriveApp as any).getRootFolder = jest.fn(() => rootFolder);
 
-      const folder = ensureFolder("Projects/2024");
+      const folder = ensureFolder("Projects/2025");
 
       expect(folder).toBeDefined();
       expect(rootFolder.getFoldersByName).toHaveBeenCalled();
@@ -79,7 +79,7 @@ describe("Docs Module", () => {
       const rootFolder = createMockFolder("root");
       (global.DriveApp as any).getRootFolder = jest.fn(() => rootFolder);
 
-      const folder = ensureFolder("Projects/2024/Q1");
+      const folder = ensureFolder("Projects/2025/Q1");
 
       expect(folder).toBeDefined();
     });
