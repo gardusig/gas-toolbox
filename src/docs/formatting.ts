@@ -8,7 +8,7 @@ export function formatParagraph(
     [DocumentApp.Attribute.FONT_FAMILY]: fontFamily,
   });
   paragraph.setAlignment(DocumentApp.HorizontalAlignment.JUSTIFY);
-  
+
   // Get the document from the paragraph's parent and save it
   // Paragraph -> Body -> Document (Body has a method to get the document)
   try {
