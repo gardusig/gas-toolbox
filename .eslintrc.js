@@ -54,6 +54,16 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "off",
       },
     },
+    {
+      files: ["*.config.ts"],
+      parserOptions: {
+        project: false,
+      },
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+      },
+    },
   ],
   ignorePatterns: ["dist/", "node_modules/", "*.js", "*.d.ts", "coverage/"],
 };

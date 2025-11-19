@@ -10,19 +10,20 @@ export function formatParagraph(
   paragraph.setAlignment(DocumentApp.HorizontalAlignment.JUSTIFY);
 
   // Get the document from the paragraph's parent and save it
-  // Paragraph -> Body -> Document (Body has a method to get the document)
+  // Paragraph -> Body -> Document (Body's parent is the Document)
   try {
     const parent = paragraph.getParent();
     if (parent && parent.getType() === DocumentApp.ElementType.BODY_SECTION) {
       const body = parent.asBody();
-      // Access the document through body - we need to get it from DriveApp using the doc ID
-      // But paragraphs don't expose doc ID directly. Instead, try to save via body if possible
-      // Actually, the simplest is to reopen the document by getting the paragraph's editAsText
-      // But that's not available either. Let's use a different approach - check if we can
-      // access the document's saveAndClose through the body's parent chain
+      // Body's parent is the Document - check type and save
       const bodyParent = body.getParent();
-      if (bodyParent && (bodyParent as any).saveAndClose) {
-        (bodyParent as any).saveAndClose();
+      if (
+        bodyParent &&
+        bodyParent.getType() === DocumentApp.ElementType.DOCUMENT
+      ) {
+        // TypeScript requires casting through unknown first
+        const doc = bodyParent as unknown as GoogleAppsScript.Document.Document;
+        doc.saveAndClose();
       }
     }
   } catch (error) {
