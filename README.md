@@ -1,6 +1,6 @@
 # GAS Toolbox
 
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/gardusig/gas-toolbox/actions/workflows/update-coverage-badge.yml)
+[![Coverage](https://img.shields.io/badge/coverage-99.59%25-green.svg)](https://github.com/gardusig/gas-toolbox)
 
 A comprehensive Google Apps Script library providing utilities for Drive, Docs, and Sheets.
 
