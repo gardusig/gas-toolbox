@@ -20,7 +20,6 @@ const config: Config = {
     "!**/node_modules/**",
     "!**/dist/**",
     "!**/tests/**",
-    "!src/main.ts", // main.ts is just re-exports
   ],
   coverageDirectory: "coverage",
   coverageReporters: ["text", "lcov", "html", "json-summary"],
